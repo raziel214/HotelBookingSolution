@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "+UClQVFdotrs2B4tAfQc53/48EL4ohHoMz/FxuTI91eb4pO9qDWqcZ3703Ll1BcktHt8Uepm/DqmWFJEDLEcfQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\WebApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ibeth Pacheco\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.6\\microsoft.visualstudio.azure.containers.tools.targets.1.19.6.nupkg.sha512"
+  ],
+  "logs": []
+}

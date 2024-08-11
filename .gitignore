@@ -1,0 +1,80 @@
+# Visual Studio
+.vscode/
+.vscode/*
+.vs/
+.vs/*
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Auto-generated files
+Generated\
+
+# build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+[Ll]ocal/
+[Tt]emp/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Visual Studio Code
+.vscode/
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+~$*.* 
+*.nupkg
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Icon file
+*.ico
+
+# Thumbnails
+._*
+
+# Python
+*.pyc
+
+# End of line differences
+*.sh.eol
+*.eol
+
+# Dotnet User Secrets
+secrets.json
+
+# Environment variables
+.env
+
+# Rider
+.idea/
+*.sln.iml

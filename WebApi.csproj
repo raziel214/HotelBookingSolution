@@ -9,7 +9,35 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Application\**" />
+    <Compile Remove="Domain\**" />
+    <Compile Remove="img\**" />
+    <Compile Remove="Infrastructure\**" />
+    <Compile Remove="Tests\**" />
+    <Content Remove="Application\**" />
+    <Content Remove="Domain\**" />
+    <Content Remove="img\**" />
+    <Content Remove="Infrastructure\**" />
+    <Content Remove="Tests\**" />
+    <EmbeddedResource Remove="Application\**" />
+    <EmbeddedResource Remove="Domain\**" />
+    <EmbeddedResource Remove="img\**" />
+    <EmbeddedResource Remove="Infrastructure\**" />
+    <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Application\**" />
+    <None Remove="Domain\**" />
+    <None Remove="img\**" />
+    <None Remove="Infrastructure\**" />
+    <None Remove="Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

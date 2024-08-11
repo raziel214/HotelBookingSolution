@@ -13,6 +13,6 @@ namespace Domain.Models
         public string Codigo { get; set; }
 
         // Relación inversa con Usuario
-        public ICollection<Usuario> Usuarios { get; set; }
+        public ICollection<User> Usuarios { get; set; }
     }
 }

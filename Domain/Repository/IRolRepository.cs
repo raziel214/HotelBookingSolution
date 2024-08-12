@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Repository
 {
-    internal interface IRolRepository
+    public interface IRolRepository
     {
-        Task<Rol> GetRolByIdAsync(int id);
-        Task<Rol> GetRolByNameAsync(string name);
-        Task<Rol> AddRolAsync(Rol rol);
-        Task<Rol> UpdateRolAsync(Rol rol);
-        Task<Rol> DeleteRolAsync(Rol rol);
-        Task<Rol> DeleteRolByIdAsync(int id);
-        Task<IEnumerable<Rol>> GetAllRolesAsync();
+        Task<Role> GetRolByIdAsync(int id);
+        Task<Role> GetRolByNameAsync(string name);
+        Task<Role> CreateRoleAsync(Role rol);
+        Task<Role> UpdateRolAsync(Role rol);
+        Task<Role> DeleteRolByIdAsync(int id);
+        Task<IEnumerable<Role>> GetAllRolesAsync();
     }
 }

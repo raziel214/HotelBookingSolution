@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class Rol
+    public class Role
     {
         public int IdRol { get; set; }
         public string Nombre { get; set; }

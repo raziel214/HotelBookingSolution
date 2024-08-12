@@ -16,7 +16,7 @@ namespace Domain.Models
         public int IdRol { get; set; }
 
         // Relación con Rol
-        public Rol Rol { get; set; }
+        public Role Rol { get; set; }
 
     }
 }

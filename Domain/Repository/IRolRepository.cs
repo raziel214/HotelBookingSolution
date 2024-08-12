@@ -12,7 +12,7 @@ namespace Domain.Repository
         Task<Role> GetRolByIdAsync(int id);
         Task<Role> GetRolByNameAsync(string name);
         Task<Role> CreateRoleAsync(Role rol);
-        Task<Role> UpdateRolAsync(Role rol);
+        Task UpdateRolAsync(Role rol);
         Task<Role> DeleteRolByIdAsync(int id);
         Task<IEnumerable<Role>> GetAllRolesAsync();
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Service.Roles
 {
-    internal class RoleService : IRoleService
+    public class RoleService : IRoleService
     {
         private readonly IMapper _mapper;
         private readonly IRolRepository _rolRepository;

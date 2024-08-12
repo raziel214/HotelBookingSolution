@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Models;
 using Domain.Repository;
+using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.RepositoryImpl
 {
@@ -16,15 +19,16 @@ namespace Infrastructure.RepositoryImpl
             _context = context;
         }
 
-        public async Task<Rol> CreateRolAsync(Rol rol)
+        public async Task<Role> CreateRoleAsync(Role rol)
         {
             _context.Roles.Add(rol);
             await _context.SaveChangesAsync();
             return rol;
         }
 
+       
 
-        public Task<Rol> DeleteRolByIdAsync(int id)
+        public async Task<Role> DeleteRolByIdAsync(int id)
         {
             // Buscar el rol por su ID
             var rol = await _context.Roles.FindAsync(id);
@@ -46,26 +50,28 @@ namespace Infrastructure.RepositoryImpl
 
         }
 
-        public async Task<IEnumerable<Rol>> GetAllRolesAsync()
+        public async Task<IEnumerable<Role>> GetAllRolesAsync()
         {
             return await _context.Roles.ToListAsync();
         }
 
-        public async Task<Rol> GetRolByIdAsync(int id)
+        public async Task<Role> GetRolByIdAsync(int id)
         {
             return await _context.Roles.FindAsync(id);
         }
 
-        public async Task<Rol> GetRolByNameAsync(string name)
+        public async Task<Role> GetRolByNameAsync(string name)
         {
             return await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == name);
         }
 
-        public async Task<Rol> UpdateRolAsync(Rol rol)
+        public async Task UpdateRolAsync(Role rol)
         {
             _context.Roles.Update(rol);
             await _context.SaveChangesAsync();
         }
+
+
 
     }
 }

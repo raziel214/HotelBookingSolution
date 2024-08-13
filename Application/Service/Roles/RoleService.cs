@@ -1,6 +1,7 @@
-﻿using Application.Dtos.Role;
+﻿using Application.Dtos.Roles;
 using AutoMapper;
 using Domain.Models;
+using Domain.Models.Roles;
 using Domain.Repository;
 using System;
 using System.Collections.Generic;

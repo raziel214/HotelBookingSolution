@@ -1,4 +1,4 @@
-﻿using Domain.Models;
+﻿using Domain.Models.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Application.Dtos.Roles
 {
-    public class Role
+    public class RoleCreate
     {
-        public int IdRol { get; set; }
         public string Nombre { get; set; }
         public string Codigo { get; set; }
-
-        // Relación inversa con Usuario
-        public ICollection<User> Usuarios { get; set; }
     }
 }

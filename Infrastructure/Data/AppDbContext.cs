@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Models.Roles;
+using Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

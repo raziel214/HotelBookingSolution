@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Domain.Models.Roles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.Models.Users
 {
     public class User
     {
@@ -17,6 +18,5 @@ namespace Domain.Models
 
         // Relación con Rol
         public Role Rol { get; set; }
-
     }
 }

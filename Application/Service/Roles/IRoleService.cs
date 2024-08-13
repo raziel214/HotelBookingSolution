@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Dtos.Role;
-using Domain.Models;
+using Application.Dtos.Roles;
+using Domain.Models.Roles;
 
 namespace Application.Service.Roles
 {

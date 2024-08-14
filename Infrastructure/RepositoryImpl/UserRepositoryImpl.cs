@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.RepositoryImpl
 {
-    internal class UserRepositoryImpl:IUserRepository
+    public class UserRepositoryImpl:IUserRepository
     {
         private readonly AppDbContext _context;
 

@@ -59,5 +59,6 @@ namespace Application.Service.Users
         {
             await _userRepository.UpdateUserAsync(user);
         }
+
     }
 }

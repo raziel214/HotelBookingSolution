@@ -36,7 +36,7 @@ namespace Tests
         {
             // Arrange
             var roleId = 1;
-            var expectedRole = new Role { IdRol = roleId, Nombre = "Admin" };
+            var expectedRole = new Role { Id = roleId, Nombre = "Admin" };
             _rolRepositoryMock.Setup(repo => repo.GetRolByIdAsync(roleId))
                               .ReturnsAsync(expectedRole);
 
@@ -45,7 +45,7 @@ namespace Tests
 
             // Assert
             Xunit.Assert.NotNull(actualRole);
-            Xunit.Assert.Equal(expectedRole.IdRol, actualRole.IdRol);
+            Xunit.Assert.Equal(expectedRole.Id, actualRole.Id);
             Xunit.Assert.Equal(expectedRole.Nombre, actualRole.Nombre);
         }
 

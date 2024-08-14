@@ -13,7 +13,7 @@ namespace Application.Service.Roles
         Task<Role> GetRoleByIdAsync(int id);
         Task<Role> GetRoleByNameAsync(string name);
         Task<RoleRead> CreateRoleAsync(RoleCreate role);
-        Task UpdateRoleAsync(Role role);
+        Task UpdateRoleAsync(int id,Role role);
         Task<Role> DeleteRoleByIdAsync(int id);
         Task<IEnumerable<Role>> GetAllRolesAsync();
 

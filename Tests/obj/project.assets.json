@@ -4670,8 +4670,8 @@
     },
     "Aplication/1.0.0": {
       "type": "project",
-      "path": "../Application/Aplication.csproj",
-      "msbuildProject": "../Application/Aplication.csproj"
+      "path": "../Aplication/Aplication.csproj",
+      "msbuildProject": "../Aplication/Aplication.csproj"
     },
     "Domain/1.0.0": {
       "type": "project",
@@ -4726,8 +4726,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Application\\Aplication.csproj": {
-              "projectPath": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Application\\Aplication.csproj"
+            "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Aplication\\Aplication.csproj": {
+              "projectPath": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Aplication\\Aplication.csproj"
             },
             "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Domain\\Domain.csproj": {
               "projectPath": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Domain\\Domain.csproj"

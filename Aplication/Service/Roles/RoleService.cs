@@ -61,7 +61,7 @@ namespace Application.Service.Roles
             return await _rolRepository.GetRolByNameAsync(name);
         }
 
-        public async Task UpdateRoleAsync(Role role)
+        public async Task UpdateRoleAsync(int id, Role role)
         {
             await _rolRepository.UpdateRolAsync(role);
         }

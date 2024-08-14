@@ -44,12 +44,12 @@ namespace WebApi.Controllers.Roles
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRol(int id, Role rol)
         {
-            if (id != rol.IdRol)
+            if (id != rol.Id)
             {
                 return BadRequest();
             }
 
-            await _roleService.UpdateRoleAsync(rol);
+            await _roleService.UpdateRoleAsync(id,rol);
             return NoContent();
         }
 

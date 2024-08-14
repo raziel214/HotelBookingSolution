@@ -1,4 +1,5 @@
 using Application.Service.Roles;
+using Application.Service.Users;
 using Domain.Repository;
 using Infrastructure.Data;
 using Infrastructure.RepositoryImpl;
@@ -15,7 +16,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IRolRepository, RoleRepositoryImpl>(); // Añade esta línea
+builder.Services.AddScoped<IRolRepository, RoleRepositoryImpl>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
 
 // Registrar ApplicationDbContext con la cadena de conexión
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -30,9 +30,20 @@ namespace Application.Service.Roles
             return dto;
         }
 
-        public Task<Role> DeleteRoleByIdAsync(int id)
+        public async Task<Role> DeleteRoleByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            // Verificar si el rol existe antes de intentar eliminarlo
+            var role = await _rolRepository.GetRolByIdAsync(id);
+            if (role == null)
+            {
+                throw new KeyNotFoundException($"El rol con ID {id} no fue encontrado.");
+            }
+
+            // Eliminar el rol directamente por ID
+            await _rolRepository.DeleteRolByIdAsync(id);
+            await _rolRepository.SaveChangesAsync();
+
+            return role;
         }
 
         public async Task<IEnumerable<Role>> GetAllRolesAsync()

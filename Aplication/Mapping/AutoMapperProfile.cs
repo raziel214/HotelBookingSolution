@@ -1,6 +1,8 @@
 ﻿using Application.Dtos.Roles;
+using Application.Dtos.Usuarios;
 using AutoMapper;
 using Domain.Models.Roles;
+using Domain.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,10 @@ namespace Application.Mapping
             CreateMap<RoleRead, Role>();
             CreateMap<RoleCreate, Role>();
             CreateMap<Role, RoleCreate>();
+            CreateMap<User,UserCreate>();
+            CreateMap<UserCreate,User>();
+            CreateMap<User,UserRead>();
+            CreateMap<UserRead,User>();
         }
 
     }

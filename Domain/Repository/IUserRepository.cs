@@ -11,14 +11,12 @@ namespace Domain.Repository
     {
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByEmailAsync(string email);
-        Task<User> GetUserByUserNameAsync(string userName);
-        Task<User> GetUserByUserNameAndPasswordAsync(string userName, string password);
-        Task<User> GetUserByUserNameAndEmailAsync(string userName, string email);
-        Task<User> GetUserByUserNameAndEmailAndPasswordAsync(string userName, string email, string password);
-        Task<User> AddUserAsync(User user);
-        Task<User> UpdateUserAsync(User user);
-        Task<User> DeleteUserAsync(User user);
+        Task<User> GetUserByUserNameAndEmailAndPasswordAsync( string email, string password);
+        Task<User> CreateUserAsync(User user);
+        Task UpdateUserAsync(User user);
         Task<User> DeleteUserByIdAsync(int id);
         Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<int> SaveChangesAsync();
+
     }
 }

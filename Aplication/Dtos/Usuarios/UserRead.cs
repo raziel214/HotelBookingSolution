@@ -1,13 +1,12 @@
-﻿using Domain.Models.Roles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models.Users
+namespace Application.Dtos.Usuarios
 {
-    public class User
+    public class UserRead
     {
         public int Id { get; set; }
         public string Nombre { get; set; }
@@ -17,8 +16,5 @@ namespace Domain.Models.Users
         public string Email { get; set; }
         public string Password { get; set; }
         public int IdRol { get; set; }
-
-        // Relación con Rol
-        public Role Rol { get; set; }
     }
 }

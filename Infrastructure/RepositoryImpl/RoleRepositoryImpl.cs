@@ -65,11 +65,18 @@ namespace Infrastructure.RepositoryImpl
             return await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == name);
         }
 
+        public async  Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateRolAsync(Role rol)
         {
             _context.Roles.Update(rol);
             await _context.SaveChangesAsync();
         }
+
+
 
 
 

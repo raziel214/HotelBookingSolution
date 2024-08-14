@@ -2833,9 +2833,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Application\\Application.csproj",
-      "projectName": "Application",
-      "projectPath": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Application\\Application.csproj",
+      "projectUniqueName": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Application\\Aplication.csproj",
+      "projectName": "Aplication",
+      "projectPath": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Application\\Aplication.csproj",
       "packagesPath": "C:\\Users\\Ibeth Pacheco\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution\\Application\\obj\\",
       "projectStyle": "PackageReference",

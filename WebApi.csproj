@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -9,21 +9,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Aplication\**" />
     <Compile Remove="Application\**" />
     <Compile Remove="Domain\**" />
     <Compile Remove="img\**" />
     <Compile Remove="Infrastructure\**" />
     <Compile Remove="Tests\**" />
+    <Content Remove="Aplication\**" />
     <Content Remove="Application\**" />
     <Content Remove="Domain\**" />
     <Content Remove="img\**" />
     <Content Remove="Infrastructure\**" />
     <Content Remove="Tests\**" />
+    <EmbeddedResource Remove="Aplication\**" />
     <EmbeddedResource Remove="Application\**" />
     <EmbeddedResource Remove="Domain\**" />
     <EmbeddedResource Remove="img\**" />
     <EmbeddedResource Remove="Infrastructure\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Aplication\**" />
     <None Remove="Application\**" />
     <None Remove="Domain\**" />
     <None Remove="img\**" />
@@ -32,14 +36,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Aplication.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="Application\Application.csproj" />
+    <ProjectReference Include="Application\Aplication.csproj" />
     <ProjectReference Include="Domain\Domain.csproj" />
     <ProjectReference Include="Infrastructure\Infrastructure.csproj" />
   </ItemGroup>

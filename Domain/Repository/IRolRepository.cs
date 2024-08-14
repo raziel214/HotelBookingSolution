@@ -15,5 +15,6 @@ namespace Domain.Repository
         Task UpdateRolAsync(Role rol);
         Task<Role> DeleteRolByIdAsync(int id);
         Task<IEnumerable<Role>> GetAllRolesAsync();
+        Task<int> SaveChangesAsync();
     }
 }

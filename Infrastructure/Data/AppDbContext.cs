@@ -1,32 +1,52 @@
-﻿using Domain.Models;
+﻿using Domain.Models.Roles;
+using Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class AppDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
         }
 
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Rol> Roles { get; set; }
+        public DbSet<User> Usuarios { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // Configurar la relación uno a muchos entre Usuario y Rol
-            modelBuilder.Entity<Usuario>()
+            modelBuilder.Entity<User>()
                 .HasOne(u => u.Rol)
                 .WithMany(r => r.Usuarios)
                 .HasForeignKey(u => u.IdRol);
+
+            modelBuilder.Entity<Role>().HasData(
+            new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
+            new Role { Id = 2, Nombre = "token generate", Codigo = "token_gen" }   
+            );
+            modelBuilder.Entity<User>().HasData(
+                new User
+            {
+                Id = 1,
+                Nombre = "John Fredy",
+                Apellido = "Quimbaya Orozco",
+                Documento = 94042671,
+                TipoDocumento = "CC",
+                Email = "soulreavers214@gmail.com",
+                Password = "W)AM%YuS7bG?KtDzn!&sQd",//$2y$10$OSt6CrayRrAuDaaDdP6HQ.ThwZ9Ys9jQUpF75AP.lPlRvlR5OWBra
+                    IdRol = 2 // Asegúrate de que este es el Id del rol "token"
+            }
+        );
+
         }
     }
 }

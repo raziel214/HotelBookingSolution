@@ -1,4 +1,5 @@
-﻿using Application.Dtos.Usuarios;
+﻿using Aplication.Dtos.Usuarios;
+using Application.Dtos.Usuarios;
 using Domain.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,7 @@ namespace Application.Service.Users
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task UpdateUserAsync(int id, User user);
         Task<User> DeleteUserAsync(int id);
+        // Aquí agregamos el método de login
+        Task<string> LoginUserAsync(UserLogin userLogin);
     }
 }

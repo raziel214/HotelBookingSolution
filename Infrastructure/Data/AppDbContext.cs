@@ -35,17 +35,17 @@ namespace Infrastructure.Data
             );
             modelBuilder.Entity<User>().HasData(
                 new User
-            {
-                Id = 1,
-                Nombre = "John Fredy",
-                Apellido = "Quimbaya Orozco",
-                Documento = 94042671,
-                TipoDocumento = "CC",
-                Email = "soulreavers214@gmail.com",
-                Password = "W)AM%YuS7bG?KtDzn!&sQd",//$2y$10$OSt6CrayRrAuDaaDdP6HQ.ThwZ9Ys9jQUpF75AP.lPlRvlR5OWBra
+                {
+                    Id = 1,
+                    Nombre = "John Fredy",
+                    Apellido = "Quimbaya Orozco",
+                    Documento = 94042671,
+                    TipoDocumento = "CC",
+                    Email = "soulreavers214@gmail.com",
+                    Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
                     IdRol = 2 // Asegúrate de que este es el Id del rol "token"
-            }
-        );
+                }
+            );
 
         }
     }

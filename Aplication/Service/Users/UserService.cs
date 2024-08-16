@@ -1,4 +1,6 @@
-﻿using Application.Dtos.Usuarios;
+﻿using Aplication.Dtos.Usuarios;
+using Aplication.Service.Seguridad;
+using Application.Dtos.Usuarios;
 using AutoMapper;
 using Domain.Models.Roles;
 using Domain.Models.Users;
@@ -15,11 +17,13 @@ namespace Application.Service.Users
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly ISecurityService _securityService;
 
-        public UserService(IMapper mapper, IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IMapper mapper, ISecurityService securityService)
         {
-            _mapper = mapper;
             _userRepository = userRepository;
+            _mapper = mapper;
+            _securityService = securityService;
         }
 
         public async Task<UserRead> CreateUserAsync(UserCreate userCreate)
@@ -58,6 +62,30 @@ namespace Application.Service.Users
         public async Task UpdateUserAsync(int id, User user)
         {
             await _userRepository.UpdateUserAsync(user);
+        }
+
+        public async Task<string> LoginUserAsync(UserLogin userLogin)
+        {
+            // Obtener el usuario desde el repositorio basado en el email/username
+            var user = await _userRepository.GetUserByEmailAsync(userLogin.UserEmail);
+
+            // Si el usuario no existe, retornar null o lanzar una excepción
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("Invalid username or password.");
+            }
+
+            // Verificar la contraseña usando BCrypt
+            if (!_securityService.VerifyPassword(user.Password, userLogin.Password))
+            {
+                throw new UnauthorizedAccessException("Invalid username or password");
+            }
+
+            // Generar el token JWT
+            var token = _securityService.GenerateJwtToken(user);
+
+            // Retornar el token JWT
+            return token;
         }
 
     }

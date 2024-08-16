@@ -53,7 +53,7 @@ namespace Infrastructure.RepositoryImpl
 
         public async  Task<User> GetUserByEmailAsync(string email)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async  Task<User> GetUserByIdAsync(int id)

@@ -1,6 +1,7 @@
 ﻿using Application.Dtos.Usuarios;
 using Application.Service.Users;
 using Domain.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers.Users
 {
     [Route("/api/Hotel/v1/usuarios")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -41,6 +43,9 @@ namespace WebApi.Controllers.Users
         [HttpPost]
         public async Task<ActionResult> CreateUser(UserCreate user)
         {
+            // Hashear la contraseña antes de crear el usuario
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+
             var CreatedUser = await _userService.CreateUserAsync(user);
             return CreatedAtAction(nameof(GetRolById), new { id = CreatedUser.Nombre }, CreatedUser);
         }

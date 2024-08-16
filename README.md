@@ -44,6 +44,12 @@ Este diagrama detalla los componentes dentro de cada contenedor:
 
 ![Diagrama de Componentes](img/SamarttalentApi-Componentes.png)
 
+## Diagrama de Base de Datos
+
+Este diagrama detalla el modelo de la base de datos:
+
+![Diagrama de Componentes](img/HotelBookingSolution.jpeg)
+
 ## Configuración
 
 ### Requisitos
@@ -51,7 +57,27 @@ Este diagrama detalla los componentes dentro de cada contenedor:
 - .NET Core 8
 - Docker
 - Git
-- SQL Server (u otro motor de base de datos compatible)
+- SQL Server
+### Dependencias utilizadas en el proyecto
+1. lista de dependencias
+   ```bash
+   AutoMapper.Extensions.Microsoft.DependencyInjection
+   BCrypt.Net-Next
+   coverlet.collector
+   Microsoft.AspNetCore.Authentication.JwtBearer
+   Microsoft.AspNetCore.Mvc.NewtonsoftJson
+   Microsoft.EntityFrameworkCore.Design
+   Microsoft.EntityFrameworkCore.SqlServer
+   Microsoft.Extensions.Configuration.Json
+   Microsoft.Extensions.Configuration.UserSecrets
+   Microsoft.NET.Test.Sdk
+   Microsoft.Playwright.MSTest
+   Microsoft.VisualStudio.Azure.Containers.Tools.Targets
+   Moq
+   MSTest.TestAdapter
+   MSTest.TestFramework
+   Swashbuckle.AspNetCore
+   xunit
 
 ### Instrucciones de Configuración
 

@@ -1,4 +1,5 @@
-﻿using Application.Dtos.Roles;
+﻿using Aplication.Dtos.Usuarios;
+using Application.Dtos.Roles;
 using Application.Dtos.Usuarios;
 using AutoMapper;
 using Domain.Models.Roles;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Mapping
+namespace Aplication.Mapping
 {
     public class AutoMapperProfile : Profile
     {
@@ -20,10 +21,12 @@ namespace Application.Mapping
             CreateMap<RoleRead, Role>();
             CreateMap<RoleCreate, Role>();
             CreateMap<Role, RoleCreate>();
-            CreateMap<User,UserCreate>();
-            CreateMap<UserCreate,User>();
-            CreateMap<User,UserRead>();
-            CreateMap<UserRead,User>();
+            CreateMap<User, UserCreate>();
+            CreateMap<UserCreate, User>();
+            CreateMap<User, UserRead>();
+            CreateMap<UserRead, User>();
+            CreateMap<UserLogin, User>();
+
         }
 
     }

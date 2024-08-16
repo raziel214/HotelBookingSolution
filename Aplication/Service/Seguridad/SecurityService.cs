@@ -28,10 +28,12 @@ namespace Aplication.Service.Seguridad
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(ClaimTypes.Name, user.Nombre),
-                    new Claim(ClaimTypes.Role, user.Rol.Nombre)
-                }),
+            new Claim(ClaimTypes.Name, user.Nombre),
+            new Claim(ClaimTypes.Role, user.Rol.Nombre)
+        }),
                 Expires = DateTime.UtcNow.AddHours(1),
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Issuer"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

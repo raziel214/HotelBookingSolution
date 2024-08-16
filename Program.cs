@@ -71,7 +71,7 @@ Console.WriteLine($"Hashed Password: {hashedPassword}"); // Solo para desarrollo
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelBookingSolution", Version = "v1" });
 
     // Configurar el esquema de seguridad JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme

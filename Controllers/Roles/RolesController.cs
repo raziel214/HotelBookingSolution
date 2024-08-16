@@ -1,12 +1,15 @@
 ﻿using Application.Dtos.Roles;
 using Application.Service.Roles;
 using Domain.Models.Roles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace WebApi.Controllers.Roles
 {
 
-    [ApiController]
+    
     [Route("/api/Hotel/v1/roles")]
+    [Authorize]
+    [ApiController]
     public class RolesController : ControllerBase
     {
         private readonly IRoleService _roleService;

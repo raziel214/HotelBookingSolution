@@ -53,12 +53,22 @@ namespace Application.Service.Roles
 
         public async  Task<Role> GetRoleByIdAsync(int id)
         {
-            return await _rolRepository.GetRolByIdAsync(id);
+            var role = await _rolRepository.GetRolByIdAsync(id);
+            if (role == null)
+            {
+                throw new KeyNotFoundException($"El rol con el ID {id} no fue encontrado.");
+            }
+            return role;
         }
 
         public async  Task<Role> GetRoleByNameAsync(string name)
         {
-            return await _rolRepository.GetRolByNameAsync(name);
+            var role = await _rolRepository.GetRolByNameAsync(name);
+            if (role == null)
+            {
+                throw new KeyNotFoundException($"El rol con el nombre {name} no fue encontrado.");
+            }
+            return role;
         }
 
         public async Task UpdateRoleAsync(int id, Role role)

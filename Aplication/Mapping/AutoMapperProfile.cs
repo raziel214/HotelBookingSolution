@@ -1,7 +1,9 @@
-﻿using Aplication.Dtos.Usuarios;
+﻿using Aplication.Dtos.Hoteles;
+using Aplication.Dtos.Usuarios;
 using Application.Dtos.Roles;
 using Application.Dtos.Usuarios;
 using AutoMapper;
+using Domain.Models.Hoteles;
 using Domain.Models.Roles;
 using Domain.Models.Users;
 using System;
@@ -26,6 +28,12 @@ namespace Aplication.Mapping
             CreateMap<User, UserRead>();
             CreateMap<UserRead, User>();
             CreateMap<UserLogin, User>();
+            CreateMap<User, UserLogin>();
+            CreateMap<Hotel,HotelCreate>();
+            CreateMap<HotelCreate,Hotel>();
+            CreateMap<Hotel,HotelRead>();
+            CreateMap<HotelRead,Hotel>();
+            CreateMap<HotelRead, Hotel>();
 
         }
 

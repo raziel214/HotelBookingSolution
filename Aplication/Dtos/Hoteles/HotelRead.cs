@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Models.Users;
 
-namespace Domain.Models.Roles
+namespace Aplication.Dtos.Hoteles
 {
-    public class Role
+    public class HotelRead
     {
-
-        public int Id{ get; set; }
+        public int IdHotel { get; set; }
         public string Nombre { get; set; }
         public string Codigo { get; set; }
-
-        // Relación inversa con Usuario
-        public ICollection<User> Usuarios { get; set; }
+        public string Ubicacion { get; set; }
+        public short Estado { get; set; }
     }
 }

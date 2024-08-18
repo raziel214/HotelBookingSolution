@@ -17,6 +17,7 @@ namespace Domain.Models.Habitaciones
         public int IdTipoHabitacion { get; set; }
         public decimal CostoBase { get; set; }
         public int Estado { get; set; }
+        
 
         // Relación con Hotel
         public Hotel Hotel { get; set; }

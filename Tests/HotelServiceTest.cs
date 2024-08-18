@@ -40,9 +40,9 @@ namespace Tests
             var result = await _hotelService.GetHotelByIdAsync(hotelId);
 
             // Assert
-            Xunit.Assert.NotNull(result);
-            Xunit.Assert.Equal(expectedHotel.IdHotel, result.IdHotel);
-            Xunit.Assert.Equal(expectedHotel.Nombre, result.Nombre);
+            Assert.NotNull(result);
+            Assert.Equal(expectedHotel.IdHotel, result.IdHotel);
+            Assert.Equal(expectedHotel.Nombre, result.Nombre);
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace Tests
             var result = await _hotelService.GetHotelByCodeAsync(hotelCode);
 
             // Assert
-            Xunit.Assert.Null(result);  // Verificar que el resultado es nulo
+            Assert.Null(result);  // Verificar que el resultado es nulo
         }
 
         [Fact]
@@ -105,8 +105,8 @@ namespace Tests
             var result = await _hotelService.GetHotelByNameAsync(hotelName);
 
             // Assert
-            Xunit.Assert.NotNull(result);
-            Xunit.Assert.Equal(expectedHotel.Nombre, result.Nombre);
+            Assert.NotNull(result);
+            Assert.Equal(expectedHotel.Nombre, result.Nombre);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Tests
             var result = await _hotelService.GetHotelByNameAsync(hotelName);
 
             // Assert
-            Xunit.Assert.Null(result);
+           Assert.Null(result);
         }
 
 

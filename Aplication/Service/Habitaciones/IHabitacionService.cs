@@ -12,14 +12,14 @@ namespace Aplication.Service.Habitaciones
     {
         Task<IEnumerable<Habitacion>> GetAllHabitacionAsync();
         Task<Habitacion> GetByIdHabitacionAsync(int id);
-        Task<Habitacion> GetHabitacionByCodeAsync(string code);
-        Task<Habitacion> GetHabitacionByTypeAsync(string type);
-        Task<Habitacion> GetHabitacionByPriceAsync(int price);
+        Task<Habitacion> GetHabitacionByCodeAsync(int code);
+        Task<IEnumerable<Habitacion>> GetHabitacionByTypeAsync(int type);
+        Task<IEnumerable<Habitacion>> GetHabitacionByPriceAsync(int price);
         Task<Habitacion> GetHabitacionByStatusAsync(string status);
-        Task<Habitacion> GetHabitacionByHotelAsync(int hotel);
+        Task<IEnumerable<Habitacion>> GetHabitacionByHotelAsync(int hotelId);
         Task<HabitacionRead> CreateHabitacionAsync(HabitacionCreate habitacion);
         Task  UpdateHabitacionAsync(int id, Habitacion habitacion);
-        Task<Habitacion> DeleteHabitacionAsync(int id);
+        Task<Habitacion> DeleteHabitacionByIdAsync(int id);
 
 
     }

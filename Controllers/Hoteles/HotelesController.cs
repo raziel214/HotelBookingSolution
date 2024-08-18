@@ -19,7 +19,7 @@ namespace WebApi.Controllers.Hoteles
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllHoteles()
+        public async Task<ActionResult> GetAllHotelsAsync()
         {
             var hoteles = await _hotelService.GetAllHotelsAsync();
             return new JsonResult(hoteles);
@@ -37,14 +37,14 @@ namespace WebApi.Controllers.Hoteles
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateHotel(HotelCreate hotel)
+        public async Task<ActionResult> CreateHotelAsync(HotelCreate hotel)
         {
             var createdHotel = await _hotelService.CreateHotelAsync(hotel);
             return CreatedAtAction(nameof(GetHotelById), new { id = createdHotel.IdHotel }, createdHotel);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHotel(int id, Hotel hotel)
+        public async Task<IActionResult> UpdateHotelAsync(int id, Hotel hotel)
         {
             if (id != hotel.IdHotel)
             {
@@ -56,14 +56,14 @@ namespace WebApi.Controllers.Hoteles
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHotel(int id)
+        public async Task<IActionResult> DeleteHotelByIdAsync(int id)
         {
             await _hotelService.DeleteHotelByIdAsync(id);
             return NoContent();
         }
 
         [HttpGet("byname/{name}")]
-        public async Task<ActionResult> GetHotelByName(string name)
+        public async Task<ActionResult> GetHotelByNameAsync(string name)
         {
             var hotel = await _hotelService.GetHotelByNameAsync(name);
             if (hotel == null)
@@ -74,7 +74,7 @@ namespace WebApi.Controllers.Hoteles
         }
 
         [HttpGet("bycode/{code}")]
-        public async Task<ActionResult> GetHotelByCode(string code)
+        public async Task<ActionResult> GetHotelByCodeAsync(string code)
         {
             var hotel = await _hotelService.GetHotelByCodeAsync(code);
             if (hotel == null)
@@ -83,6 +83,8 @@ namespace WebApi.Controllers.Hoteles
             }
             return Ok(hotel);
         }
+
+
 
     }
 }

@@ -18,5 +18,6 @@ namespace Application.Service.Users
         Task<User> DeleteUserAsync(int id);
         // Aquí agregamos el método de login
         Task<string> LoginUserAsync(UserLogin userLogin);
+        
     }
 }

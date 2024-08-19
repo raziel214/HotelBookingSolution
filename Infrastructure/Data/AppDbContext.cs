@@ -1,5 +1,7 @@
 ﻿using Domain.Models.Habitaciones;
 using Domain.Models.Hoteles;
+using Domain.Models.HotelesPreferidos;
+using Domain.Models.Reservas;
 using Domain.Models.Roles;
 using Domain.Models.TiposHabitaciones;
 using Domain.Models.Users;
@@ -24,6 +26,8 @@ namespace Infrastructure.Data
         public DbSet<Hotel> Hoteles { get; set; }
         public DbSet<Habitacion> Habitaciones { get; set; }
         public DbSet<TiposHabitacion> TiposHabitaciones { get; set; }
+        public DbSet<HotelPreferido> HotelesPreferidos { get; set; }
+        public DbSet<Reserva> Reservas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,6 +55,25 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Habitacion>()
                 .Property(h => h.CostoBase)
                 .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<HotelPreferido>(entity =>
+            {
+                // Configuración de la clave primaria
+                entity.HasKey(hp => hp.IdPreferido);
+
+                // Configuración de la relación con Usuario
+                entity.HasOne(hp => hp.Usuario)
+                      .WithMany(u => u.HotelesPreferidos)
+                      .HasForeignKey(hp => hp.IdUsuario)
+                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
+
+                // Configuración de la relación con Hotel
+                entity.HasOne(hp => hp.Hotel)
+                      .WithMany(h => h.HotelesPreferidos)
+                      .HasForeignKey(hp => hp.IdHotel)
+                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
+            });
+
 
             modelBuilder.Entity<Role>().HasData(
             new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
@@ -84,6 +107,14 @@ namespace Infrastructure.Data
                     Nombre = "Hotel Playa",
                     Codigo = "HTL002",
                     Ubicacion = "Costa del Sol",
+                    Estado = 1
+                },
+                new Hotel
+                {
+                    IdHotel = 3,
+                    Nombre = "Hotel Montaña",
+                    Codigo = "HTL003",
+                    Ubicacion = "Montañas del Norte",
                     Estado = 1
                 }
              );
@@ -147,6 +178,22 @@ namespace Infrastructure.Data
                     Estado = 1
                 }
             );
+
+            modelBuilder.Entity<HotelPreferido>().HasData(
+                new HotelPreferido
+                {
+                    IdPreferido = 1,
+                    IdUsuario = 1,
+                    IdHotel = 1
+                },
+                new HotelPreferido
+                {
+                    IdPreferido = 2,
+                    IdUsuario = 1,
+                    IdHotel = 2
+                }
+            );
+
 
         }
     }

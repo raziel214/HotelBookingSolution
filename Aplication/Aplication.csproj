@@ -31,4 +31,9 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Service\HotelesPreferidos\" />
+    <Folder Include="Service\Reservas\" />
+  </ItemGroup>
+
 </Project>

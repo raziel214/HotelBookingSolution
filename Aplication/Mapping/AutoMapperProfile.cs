@@ -1,10 +1,14 @@
-﻿using Aplication.Dtos.Hoteles;
+﻿using Aplication.Dtos.Habitaciones;
+using Aplication.Dtos.HabitacionesTipos;
+using Aplication.Dtos.Hoteles;
 using Aplication.Dtos.Usuarios;
 using Application.Dtos.Roles;
 using Application.Dtos.Usuarios;
 using AutoMapper;
+using Domain.Models.Habitaciones;
 using Domain.Models.Hoteles;
 using Domain.Models.Roles;
+using Domain.Models.TiposHabitaciones;
 using Domain.Models.Users;
 using System;
 using System.Collections.Generic;
@@ -34,6 +38,15 @@ namespace Aplication.Mapping
             CreateMap<Hotel,HotelRead>();
             CreateMap<HotelRead,Hotel>();
             CreateMap<HotelRead, Hotel>();
+            CreateMap<Habitacion, HabitacionCreate>();
+            CreateMap<HabitacionCreate, Habitacion>();
+            CreateMap<Habitacion, HabitacionRead>();
+            CreateMap<HabitacionRead, Habitacion>();
+            CreateMap<TiposHabitacion, TipoHabitacionCreate>();
+            CreateMap<TipoHabitacionCreate, TiposHabitacion>();
+            CreateMap<TiposHabitacion, TipoHabitacionRead>();
+            CreateMap<TipoHabitacionRead, TiposHabitacion>();
+
 
         }
 

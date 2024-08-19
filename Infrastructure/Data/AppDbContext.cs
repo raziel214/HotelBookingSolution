@@ -1,6 +1,7 @@
 ﻿using Domain.Models.Habitaciones;
 using Domain.Models.Hoteles;
 using Domain.Models.Roles;
+using Domain.Models.TiposHabitaciones;
 using Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,7 @@ namespace Infrastructure.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Hotel> Hoteles { get; set; }
         public DbSet<Habitacion> Habitaciones { get; set; }
+        public DbSet<TiposHabitacion> TiposHabitaciones { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +40,17 @@ namespace Infrastructure.Data
                .HasOne(h => h.Hotel)
                .WithMany(h => h.Habitaciones)
                .HasForeignKey(h => h.IdHotel);
+
+            // Configurar la relación uno a muchos entre TipoHabitacion y Habitacion
+            modelBuilder.Entity<Habitacion>()
+               .HasOne(h => h.TiposHabitacion)
+               .WithMany(h => h.Habitaciones)
+               .HasForeignKey(h => h.IdTipoHabitacion);
+
+            // Configurar la precicion de la tabla
+            modelBuilder.Entity<Habitacion>()
+                .Property(h => h.CostoBase)
+                .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<Role>().HasData(
             new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
@@ -74,6 +87,66 @@ namespace Infrastructure.Data
                     Estado = 1
                 }
              );
+
+            modelBuilder.Entity<TiposHabitacion>().HasData(
+                new TiposHabitacion
+                {
+                    IdTipoHabitacion = 1,
+                    Nombre = "Sencilla",
+                    Descripcion = "Habitación sencilla con cama sencilla",
+                },
+                new TiposHabitacion
+                {
+                    IdTipoHabitacion = 2,
+                    Nombre = "Doble",
+                    Descripcion = "Habitación doble con cama doble",
+                },
+                new TiposHabitacion
+                {
+                    IdTipoHabitacion = 3,
+                    Nombre = "Suite",
+                    Descripcion = "Habitación suite con cama doble y jacuzzi",
+                }
+            );
+
+            modelBuilder.Entity<Habitacion>().HasData(
+                new Habitacion
+                {
+                    IdHabitacion = 1,
+                    IdHotel = 1,
+                    NumeroHabitacion = 101,
+                    IdTipoHabitacion = 1,
+                    CostoBase = 100000,
+                    Estado = 1
+                },
+                new Habitacion
+                {
+                    IdHabitacion = 2,
+                    IdHotel = 1,
+                    NumeroHabitacion = 102,
+                    IdTipoHabitacion = 2,
+                    CostoBase = 150000,
+                    Estado = 1
+                },
+                new Habitacion
+                {
+                    IdHabitacion = 3,
+                    IdHotel = 2,
+                    NumeroHabitacion = 201,
+                    IdTipoHabitacion = 2,
+                    CostoBase = 200000,
+                    Estado = 1
+                },
+                new Habitacion
+                {
+                    IdHabitacion = 4,
+                    IdHotel = 2,
+                    NumeroHabitacion = 202,
+                    IdTipoHabitacion = 3,
+                    CostoBase = 300000,
+                    Estado = 1
+                }
+            );
 
         }
     }

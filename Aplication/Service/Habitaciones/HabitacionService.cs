@@ -31,14 +31,15 @@ namespace Aplication.Service.Habitaciones
 
         public async Task<Habitacion> DeleteHabitacionByIdAsync(int id)
         {
-             var habitacion = await _habitacionRepository.GetByIdHabitacionAsync(id);
-            if (habitacion == null) 
+            var habitacion = await _habitacionRepository.GetByIdHabitacionAsync(id);
+            if (habitacion == null)
             {
-                throw new KeyNotFoundException($"La habitacion con ID {id} no fue encontrada.");
+                throw new KeyNotFoundException($"La habitacion con el ID {id} no fue encontrada.");
             }
             await _habitacionRepository.DeleteHabitacionByIdAsync(id);
             await _habitacionRepository.SaveChangesAsync();
             return habitacion;
+            
         }
 
         public async Task<IEnumerable<Habitacion>> GetAllHabitacionAsync()
@@ -101,10 +102,6 @@ namespace Aplication.Service.Habitaciones
             return habitaciones;
         }
 
-        public Task<Habitacion> GetHabitacionByStatusAsync(string status)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<IEnumerable<Habitacion>> GetHabitacionByTypeAsync(int type)
         {
@@ -123,5 +120,6 @@ namespace Aplication.Service.Habitaciones
             await _habitacionRepository.UpdateHabitacionAsync(id,habitacion);
             
         }
+        
     }
 }

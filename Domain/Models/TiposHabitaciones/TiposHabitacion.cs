@@ -14,6 +14,7 @@ namespace Domain.Models.TiposHabitaciones
         public int IdTipoHabitacion { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+        
 
         // Relación con Habitacion
         public ICollection<Habitacion> Habitaciones { get; set; }

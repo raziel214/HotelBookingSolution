@@ -28,12 +28,12 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<Habitacion> DeleteHabitacionByIdAsync(int id)
         {
-           var habitacion=_context.Habitaciones.Find(id);
+           var habitacion=await _context.Habitaciones.FindAsync(id);
             if (habitacion != null)
             {
                 _context.Habitaciones.Remove(habitacion);
-                _context.SaveChangesAsync();
-                return await Task.FromResult(habitacion);
+                await _context.SaveChangesAsync();
+                return habitacion;
             }
             else
             {
@@ -48,15 +48,7 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<Habitacion> GetByIdHabitacionAsync(int id)
         {
-            var habitacion = _context.Habitaciones.Find(id);
-            if (habitacion != null)
-            {
-                return await Task.FromResult(habitacion);
-            }
-            else
-            {
-                throw new Exception("La habitacion no existe");
-            }
+            return await _context.Habitaciones.FindAsync(id);
         }
 
         public async Task<Habitacion> GetHabitacionByCodeAsync(int code)
@@ -64,7 +56,7 @@ namespace Infrastructure.RepositoryImpl
             var habitacion = _context.Habitaciones.Where(h => h.NumeroHabitacion == code).FirstOrDefault();
             if (habitacion != null)
             {
-                return await Task.FromResult(habitacion);
+                return await _context.Habitaciones.FindAsync(habitacion.IdHabitacion);
             }
             else
             {
@@ -109,10 +101,8 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task UpdateHabitacionAsync(int id, Habitacion habitacion)
         {
-           _context.Habitaciones.Update(habitacion);
-            await _context.SaveChangesAsync();
-            
-
+          _context.Habitaciones.Update(habitacion);
+            await _context.SaveChangesAsync();          
         }
 
         

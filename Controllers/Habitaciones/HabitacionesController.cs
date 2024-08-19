@@ -1,4 +1,5 @@
 ﻿using Aplication.Dtos.Habitaciones;
+using Aplication.Dtos.Hoteles;
 using Aplication.Service.Habitaciones;
 using Domain.Models.Habitaciones;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace WebApi.Controllers.Habitaciones
 {
+
     [Route("/api/Hotel/v1/habitaciones")]
     [Authorize]
     [ApiController]
@@ -28,7 +30,7 @@ namespace WebApi.Controllers.Habitaciones
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetByIdHabitacionAsync(int id)
+        public async Task<ActionResult> GetByHabitacionAsyncById(int id)
         {
             var habitacion = await _habitacionService.GetByIdHabitacionAsync(id);
             if (habitacion == null)
@@ -37,6 +39,17 @@ namespace WebApi.Controllers.Habitaciones
             }
             return Ok(habitacion);
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult> CreateHabitacionAsync(HabitacionCreate habitacion)
+        {
+            var createdHabitacion = await _habitacionService.CreateHabitacionAsync(habitacion);
+            return CreatedAtAction(nameof(GetByHabitacionAsyncById), new { id = createdHabitacion.IdHabitacion }, createdHabitacion);
+        }
+
+
+
 
         [HttpGet("code/{code}")]
         public async Task<ActionResult> GetHabitacionByCodeAsync(int code)
@@ -50,9 +63,9 @@ namespace WebApi.Controllers.Habitaciones
         }
 
         [HttpGet("type/{idtype}")]
-        public async Task<ActionResult> GetHabitacionByTypeAsync(int type)
+        public async Task<ActionResult> GetHabitacionByTypeAsync(int idtype)
         {
-            var habitacion = await _habitacionService.GetHabitacionByTypeAsync(type);
+            var habitacion = await _habitacionService.GetHabitacionByTypeAsync(idtype);
             if (habitacion == null)
             {
                 return NotFound();
@@ -72,14 +85,10 @@ namespace WebApi.Controllers.Habitaciones
         }
 
         [HttpGet("status/{status}")]
-        public async Task<ActionResult> GetHabitacionByStatusAsync(string status)
+        public async Task<ActionResult> GetHabitacionByStatusAsync(int status)
         {
-            var habitacion = await _habitacionService.GetHabitacionByStatusAsync(status);
-            if (habitacion == null)
-            {
-                return NotFound();
-            }
-            return new JsonResult(habitacion);
+            var habitacion = await _habitacionService.GetHabitacionByStatusAsync(status);            
+            return new JsonResult(habitacion);            
         }
 
         [HttpGet("hotel/{hotelId}")]
@@ -93,12 +102,7 @@ namespace WebApi.Controllers.Habitaciones
             return new JsonResult(habitaciones);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateHabitacionAsync(HabitacionCreate habitacion)
-        {
-            var createdHabitacion = await _habitacionService.CreateHabitacionAsync(habitacion);
-            return CreatedAtAction(nameof(GetByIdHabitacionAsync), new { id = createdHabitacion.IdHabitacion }, createdHabitacion);
-        }
+        
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHabitacionAsync(int id, Habitacion habitacion)

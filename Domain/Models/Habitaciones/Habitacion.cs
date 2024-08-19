@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Hoteles;
+using Domain.Models.TiposHabitaciones;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +23,9 @@ namespace Domain.Models.Habitaciones
         // Relación con Hotel
         public Hotel Hotel { get; set; }
 
-      
+        // Relación con Hotel
+        public TiposHabitacion TiposHabitacion { get; set; }
+
+
     }
 }

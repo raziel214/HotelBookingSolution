@@ -1,6 +1,7 @@
 using Aplication.Service.Habitaciones;
 using Aplication.Service.Hoteles;
 using Aplication.Service.Seguridad;
+using Aplication.Service.TiposHabitaciones;
 using Application.Service.Roles;
 using Application.Service.Users;
 using Domain.Repository;
@@ -60,7 +61,8 @@ builder.Services.AddScoped<IHotelRepository, HotelRepositoryImpl>();
 builder.Services.AddScoped<IHotelService, HotelService>();
 builder.Services.AddScoped<IHabitacionRepository, HabitacionRepositoryImpl>();
 builder.Services.AddScoped<IHabitacionService, HabitacionService>();
-
+builder.Services.AddScoped<ITipoHabitacionRepository, TipoHabitacionRepositoryImpl>();
+builder.Services.AddScoped<ITipoHabitacionService, TipoHabitacionService>();
 
 
 

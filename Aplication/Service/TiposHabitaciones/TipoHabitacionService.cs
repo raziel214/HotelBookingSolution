@@ -15,7 +15,7 @@ namespace Aplication.Service.TiposHabitaciones
         private readonly IMapper _mapper;
         private readonly ITipoHabitacionRepository _tipoHabitacionRepository;
 
-        public TipoHabitacionService(ITipoHabitacionRepository tipoHabitacionRepository, IMapper mapper)
+        public TipoHabitacionService( IMapper mapper, ITipoHabitacionRepository tipoHabitacionRepository)
         {
             _tipoHabitacionRepository = tipoHabitacionRepository;
             _mapper = mapper;

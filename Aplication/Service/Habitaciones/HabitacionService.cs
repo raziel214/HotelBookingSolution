@@ -29,9 +29,17 @@ namespace Aplication.Service.Habitaciones
             return dto;
         }
 
-        public Task<Habitacion> DeleteHabitacionByIdAsync(int id)
+        public async Task<Habitacion> DeleteHabitacionByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var habitacion = await _habitacionRepository.GetByIdHabitacionAsync(id);
+            if (habitacion == null)
+            {
+                throw new KeyNotFoundException($"La habitacion con el ID {id} no fue encontrada.");
+            }
+            await _habitacionRepository.DeleteHabitacionByIdAsync(id);
+            await _habitacionRepository.SaveChangesAsync();
+            return habitacion;
+            
         }
 
         public async Task<IEnumerable<Habitacion>> GetAllHabitacionAsync()

@@ -47,6 +47,7 @@ namespace Aplication.Mapping
             CreateMap<TiposHabitacion, TipoHabitacionRead>();
             CreateMap<TipoHabitacionRead, TiposHabitacion>();
 
+
         }
 
     }

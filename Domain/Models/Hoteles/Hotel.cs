@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Habitaciones;
+using Domain.Models.HotelesPreferidos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,5 +20,7 @@ namespace Domain.Models.Hoteles
 
         // Relación con Habitacion
         public ICollection<Habitacion> Habitaciones { get; set; }
+
+        public ICollection<HotelPreferido> HotelesPreferidos { get; set; }
     }
 }

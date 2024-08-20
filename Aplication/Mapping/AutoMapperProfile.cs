@@ -1,12 +1,16 @@
 ﻿using Aplication.Dtos.Habitaciones;
 using Aplication.Dtos.HabitacionesTipos;
 using Aplication.Dtos.Hoteles;
+using Aplication.Dtos.HotelesPreferidos;
+using Aplication.Dtos.Reservas;
 using Aplication.Dtos.Usuarios;
 using Application.Dtos.Roles;
 using Application.Dtos.Usuarios;
 using AutoMapper;
 using Domain.Models.Habitaciones;
 using Domain.Models.Hoteles;
+using Domain.Models.HotelesPreferidos;
+using Domain.Models.Reservas;
 using Domain.Models.Roles;
 using Domain.Models.TiposHabitaciones;
 using Domain.Models.Users;
@@ -46,8 +50,14 @@ namespace Aplication.Mapping
             CreateMap<TipoHabitacionCreate, TiposHabitacion>();
             CreateMap<TiposHabitacion, TipoHabitacionRead>();
             CreateMap<TipoHabitacionRead, TiposHabitacion>();
-
-
+            CreateMap<HotelPreferidoCreate, HotelPreferido>();
+            CreateMap<HotelPreferido, HotelPreferidoCreate>();
+            CreateMap<HotelPreferidoRead, HotelPreferido>();
+            CreateMap<HotelPreferido, HotelPreferidoRead>();            
+            CreateMap<ReservasCreate, Reserva>();
+            CreateMap<Reserva, ReservasCreate>();
+            CreateMap<Reserva, ReservasRead>();
+            CreateMap<ReservasRead, Reserva>();
         }
 
     }

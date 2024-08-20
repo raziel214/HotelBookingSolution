@@ -1,5 +1,7 @@
 using Aplication.Service.Habitaciones;
 using Aplication.Service.Hoteles;
+using Aplication.Service.HotelesPreferidos;
+using Aplication.Service.Reservas;
 using Aplication.Service.Seguridad;
 using Aplication.Service.TiposHabitaciones;
 using Application.Service.Roles;
@@ -63,6 +65,12 @@ builder.Services.AddScoped<IHabitacionRepository, HabitacionRepositoryImpl>();
 builder.Services.AddScoped<IHabitacionService, HabitacionService>();
 builder.Services.AddScoped<ITipoHabitacionRepository, TipoHabitacionRepositoryImpl>();
 builder.Services.AddScoped<ITipoHabitacionService, TipoHabitacionService>();
+builder.Services.AddScoped<IReservasRepository, ReservasRepositoryImpl>();
+builder.Services.AddScoped<IReservasService, ReservasService>();
+builder.Services.AddScoped<IHotelesPreferidosRepository, HotelesPreferidosRepositoryImpl>();
+builder.Services.AddScoped<IHotelesPreferidosService, HotelesPreferidosService>();
+
+
 
 
 

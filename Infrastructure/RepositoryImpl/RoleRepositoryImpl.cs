@@ -75,10 +75,5 @@ namespace Infrastructure.RepositoryImpl
             _context.Roles.Update(rol);
             await _context.SaveChangesAsync();
         }
-
-
-
-
-
     }
 }

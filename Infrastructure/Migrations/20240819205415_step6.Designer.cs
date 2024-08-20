@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240819205415_step6")]
+    partial class step6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,7 +169,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("HotelPreferido", (string)null);
+                    b.ToTable("HotelesPreferidos");
 
                     b.HasData(
                         new
@@ -197,17 +200,23 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("HabitacionIdHabitacion")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdHabitacion")
                         .HasColumnType("int");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("IdReserva");
 
-                    b.HasIndex("IdHabitacion");
+                    b.HasIndex("HabitacionIdHabitacion");
 
-                    b.HasIndex("IdUsuario");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Reservas");
                 });
@@ -242,14 +251,8 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            Codigo = "token",
+                            Codigo = "token_gen",
                             Nombre = "token generate"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Codigo = "vjh",
-                            Nombre = "Viajero"
                         });
                 });
 
@@ -313,10 +316,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Genero")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("IdRol")
                         .HasColumnType("int");
 
@@ -325,10 +324,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -349,37 +344,9 @@ namespace Infrastructure.Migrations
                             Apellido = "Quimbaya Orozco",
                             Documento = 94042671,
                             Email = "soulreavers214@gmail.com",
-                            Genero = "Masculino",
                             IdRol = 2,
                             Nombre = "John Fredy",
                             Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",
-                            Telefono = "3000000000",
-                            TipoDocumento = "CC"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Apellido = "Quintero",
-                            Documento = 94042673,
-                            Email = "soulreavers214@gmail.com",
-                            Genero = "Masculino",
-                            IdRol = 2,
-                            Nombre = "John alex",
-                            Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",
-                            Telefono = "3000000000",
-                            TipoDocumento = "CC"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Apellido = "correa Orozco",
-                            Documento = 94042673,
-                            Email = "soulreavers214@gmail.com",
-                            Genero = "Femenino",
-                            IdRol = 2,
-                            Nombre = "Angie tatiana",
-                            Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",
-                            Telefono = "3000000000",
                             TipoDocumento = "CC"
                         });
                 });
@@ -425,14 +392,14 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Models.Reservas.Reserva", b =>
                 {
                     b.HasOne("Domain.Models.Habitaciones.Habitacion", "Habitacion")
-                        .WithMany("Reserva")
-                        .HasForeignKey("IdHabitacion")
+                        .WithMany()
+                        .HasForeignKey("HabitacionIdHabitacion")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Users.User", "Usuario")
                         .WithMany("Reservas")
-                        .HasForeignKey("IdUsuario")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -450,11 +417,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Rol");
-                });
-
-            modelBuilder.Entity("Domain.Models.Habitaciones.Habitacion", b =>
-                {
-                    b.Navigation("Reserva");
                 });
 
             modelBuilder.Entity("Domain.Models.Hoteles.Hotel", b =>

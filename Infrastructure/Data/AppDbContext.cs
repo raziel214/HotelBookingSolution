@@ -1,5 +1,7 @@
 ﻿using Domain.Models.Habitaciones;
 using Domain.Models.Hoteles;
+using Domain.Models.HotelesPreferidos;
+using Domain.Models.Reservas;
 using Domain.Models.Roles;
 using Domain.Models.TiposHabitaciones;
 using Domain.Models.Users;
@@ -15,7 +17,7 @@ namespace Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
@@ -24,6 +26,8 @@ namespace Infrastructure.Data
         public DbSet<Hotel> Hoteles { get; set; }
         public DbSet<Habitacion> Habitaciones { get; set; }
         public DbSet<TiposHabitacion> TiposHabitaciones { get; set; }
+        public DbSet<HotelPreferido> HotelesPreferidos { get; set; }
+        public DbSet<Reserva> Reservas { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,7 +39,9 @@ namespace Infrastructure.Data
                 .HasOne(u => u.Rol)
                 .WithMany(r => r.Usuarios)
                 .HasForeignKey(u => u.IdRol);
-            // Configurar la relación uno a muchos entre Hotel y habitación
+
+
+            // Configurar la relación uno a muchos entre Hotel y Habitación
             modelBuilder.Entity<Habitacion>()
                .HasOne(h => h.Hotel)
                .WithMany(h => h.Habitaciones)
@@ -47,15 +53,53 @@ namespace Infrastructure.Data
                .WithMany(h => h.Habitaciones)
                .HasForeignKey(h => h.IdTipoHabitacion);
 
-            // Configurar la precicion de la tabla
+            // Configurar la preción de la tabla
             modelBuilder.Entity<Habitacion>()
                 .Property(h => h.CostoBase)
                 .HasColumnType("decimal(18,2)");
 
+            modelBuilder.Entity<HotelPreferido>(entity =>
+            {
+                entity.ToTable("HotelPreferido");  // Asegúrate de usar el nombre correcto de la tabla en la base de datos
+                entity.HasKey(hp => hp.IdPreferido);
+
+                entity.HasOne(hp => hp.Usuario)
+                      .WithMany(u => u.HotelesPreferidos)
+                      .HasForeignKey(hp => hp.IdUsuario)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(hp => hp.Hotel)
+                      .WithMany(h => h.HotelesPreferidos)
+                      .HasForeignKey(hp => hp.IdHotel)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+
+            modelBuilder.Entity<Reserva>(entity =>
+            {
+                // Configuración de la clave primaria
+                entity.HasKey(r => r.IdReserva);
+
+                // Configuración de la relación con Usuario
+                entity.HasOne(r => r.Usuario)
+                      .WithMany(u => u.Reservas)  // Cada usuario puede tener múltiples reservas
+                      .HasForeignKey(r => r.IdUsuario)
+                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
+
+                // Configuración de la relación con Habitacion
+                entity.HasOne(r => r.Habitacion)
+                      .WithMany(h => h.Reserva)  // Cada habitación puede estar en múltiples reservas
+                      .HasForeignKey(r => r.IdHabitacion)
+                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
+            });
+
+
             modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
-            new Role { Id = 2, Nombre = "token generate", Codigo = "token_gen" }   
+                new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
+                new Role { Id = 2, Nombre = "token generate", Codigo = "token" },
+                new Role { Id = 3, Nombre = "Viajero", Codigo = "vjh" }
             );
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -66,9 +110,39 @@ namespace Infrastructure.Data
                     TipoDocumento = "CC",
                     Email = "soulreavers214@gmail.com",
                     Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
-                    IdRol = 2 // Asegúrate de que este es el Id del rol "token"
+                    IdRol = 2, // Asegúrate de que este es el Id del rol "token"
+                    Genero="Masculino",
+                    Telefono="3000000000"
+                },
+                new User
+                {
+                    Id = 2,
+                    Nombre = "John alex",
+                    Apellido = "Quintero",
+                    Documento = 94042673,
+                    TipoDocumento = "CC",
+                    Email = "soulreavers214@gmail.com",
+                    Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
+                    IdRol = 2, // Asegúrate de que este es el Id del rol "token"
+                    Genero = "Masculino",
+                    Telefono = "3000000000"
+                },
+
+                new User
+                {
+                    Id = 3,
+                    Nombre = "Angie tatiana",
+                    Apellido = "correa Orozco",
+                    Documento = 94042673,
+                    TipoDocumento = "CC",
+                    Email = "soulreavers214@gmail.com",
+                    Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
+                    IdRol = 2, // Asegúrate de que este es el Id del rol "token"
+                    Genero = "Femenino",
+                    Telefono = "3000000000"
                 }
             );
+
             modelBuilder.Entity<Hotel>().HasData(
                 new Hotel
                 {
@@ -85,8 +159,16 @@ namespace Infrastructure.Data
                     Codigo = "HTL002",
                     Ubicacion = "Costa del Sol",
                     Estado = 1
+                },
+                new Hotel
+                {
+                    IdHotel = 3,
+                    Nombre = "Hotel Montaña",
+                    Codigo = "HTL003",
+                    Ubicacion = "Montañas del Norte",
+                    Estado = 1
                 }
-             );
+            );
 
             modelBuilder.Entity<TiposHabitacion>().HasData(
                 new TiposHabitacion
@@ -148,6 +230,20 @@ namespace Infrastructure.Data
                 }
             );
 
+            modelBuilder.Entity<HotelPreferido>().HasData(
+                new HotelPreferido
+                {
+                    IdPreferido = 1,
+                    IdUsuario = 1,
+                    IdHotel = 1
+                },
+                new HotelPreferido
+                {
+                    IdPreferido = 2,
+                    IdUsuario = 1,
+                    IdHotel = 2
+                }
+            );
         }
     }
 }

@@ -16,5 +16,7 @@ namespace Application.Dtos.Usuarios
         public string Email { get; set; }
         public string Password { get; set; }    
         public int IdRol { get; set; }
+        public string Genero { get; set; }
+        public string Telefono { get; set; }
     }
 }

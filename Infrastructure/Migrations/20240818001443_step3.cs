@@ -79,6 +79,7 @@ namespace Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+
             migrationBuilder.CreateTable(
                 name: "Reserva",
                 columns: table => new
@@ -88,26 +89,35 @@ namespace Infrastructure.Migrations
                     IdUsuario = table.Column<int>(type: "int", nullable: false),
                     IdHabitacion = table.Column<int>(type: "int", nullable: false),
                     FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: false),
-                    HabitacionIdHabitacion = table.Column<int>(type: "int", nullable: false)
+                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reserva", x => x.IdReserva);
                     table.ForeignKey(
-                        name: "FK_Reserva_Habitaciones_HabitacionIdHabitacion",
-                        column: x => x.HabitacionIdHabitacion,
+                        name: "FK_Reserva_Habitaciones_IdHabitacion",
+                        column: x => x.IdHabitacion,
                         principalTable: "Habitaciones",
                         principalColumn: "IdHabitacion",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Reserva_Usuarios_UsuarioId",
-                        column: x => x.UsuarioId,
+                        name: "FK_Reserva_Usuarios_IdUsuario",
+                        column: x => x.IdUsuario,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reserva_IdUsuario",
+                table: "Reserva",
+                column: "IdUsuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reserva_IdHabitacion",
+                table: "Reserva",
+                column: "IdHabitacion");
+
 
             migrationBuilder.InsertData(
                 table: "Hoteles",

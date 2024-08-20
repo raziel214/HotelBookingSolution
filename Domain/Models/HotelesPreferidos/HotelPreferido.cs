@@ -12,6 +12,7 @@ namespace Domain.Models.HotelesPreferidos
     public class HotelPreferido
     {
         [Key]
+        public int IdPreferido { get; set; }
         public int IdUsuario { get; set; }
         public int IdHotel { get; set; }
 

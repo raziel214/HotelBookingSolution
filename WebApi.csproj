@@ -9,35 +9,72 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Aplication\**" />
     <Compile Remove="Application\**" />
     <Compile Remove="Domain\**" />
+    <Compile Remove="HotelBookingSolution\**" />
     <Compile Remove="img\**" />
     <Compile Remove="Infrastructure\**" />
     <Compile Remove="Tests\**" />
+    <Content Remove="Aplication\**" />
     <Content Remove="Application\**" />
     <Content Remove="Domain\**" />
+    <Content Remove="HotelBookingSolution\**" />
     <Content Remove="img\**" />
     <Content Remove="Infrastructure\**" />
     <Content Remove="Tests\**" />
+    <EmbeddedResource Remove="Aplication\**" />
     <EmbeddedResource Remove="Application\**" />
     <EmbeddedResource Remove="Domain\**" />
+    <EmbeddedResource Remove="HotelBookingSolution\**" />
     <EmbeddedResource Remove="img\**" />
     <EmbeddedResource Remove="Infrastructure\**" />
     <EmbeddedResource Remove="Tests\**" />
+    <None Remove="Aplication\**" />
     <None Remove="Application\**" />
     <None Remove="Domain\**" />
+    <None Remove="HotelBookingSolution\**" />
     <None Remove="img\**" />
     <None Remove="Infrastructure\**" />
     <None Remove="Tests\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+    <None Include="Aplication.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="Aplication\Aplication.csproj" />
+    <ProjectReference Include="Domain\Domain.csproj" />
     <ProjectReference Include="Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

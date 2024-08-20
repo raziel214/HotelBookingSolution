@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.RepositoryImpl
 {
-    public  class ReservasRepositoryImpl: IreservasRepository
+    public  class ReservasRepositoryImpl: IReservasRepository
     {
         private readonly AppDbContext _context;
 
@@ -47,6 +47,11 @@ namespace Infrastructure.RepositoryImpl
         public async  Task<Reserva> GetReservaByIdAsync(int id)
         {
             return await _context.Reservas.FindAsync(id);
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
 
         public async Task UpdateReservaAsync(Reserva reserva)

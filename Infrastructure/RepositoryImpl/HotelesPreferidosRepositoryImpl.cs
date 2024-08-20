@@ -20,11 +20,11 @@ namespace Infrastructure.RepositoryImpl
             _context = context;
         }
 
-        public async Task<HotelPreferido> CreateHotelPreferidoAsync(int userId, int hotelId)
+        public async Task<HotelPreferido> CreateHotelPreferidoAsync(HotelPreferido hotelPreferido)
         {
-            _context.HotelesPreferidos.Add(new HotelPreferido { IdUsuario = userId, IdHotel = hotelId });
+            _context.HotelesPreferidos.Add(hotelPreferido);
             await _context.SaveChangesAsync();
-            return await GetHotelPreferidoByUserIdHotelIdAsync(userId, hotelId);
+            return hotelPreferido;
         }
 
         public async Task<HotelPreferido> DeleteHotelPreferidoByUserIdAsync(int idHotelPreferido)
@@ -68,6 +68,19 @@ namespace Infrastructure.RepositoryImpl
         {
             _context.HotelesPreferidos.Update(new HotelPreferido { IdUsuario = userId, IdHotel = hotelId });
             await _context.SaveChangesAsync();
+        }
+
+        
+
+        public async Task<HotelPreferido> DeleteHotelPreferidoByIdAsync(int idHotelPreferido)
+        {
+            var  hotelPreferido= await _context.HotelesPreferidos.FindAsync(idHotelPreferido);
+            if (hotelPreferido != null)
+            {
+                _context.HotelesPreferidos.Remove(hotelPreferido);
+                await _context.SaveChangesAsync();
+            }   
+            return hotelPreferido;
         }
     }
 }

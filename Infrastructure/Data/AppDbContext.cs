@@ -17,7 +17,7 @@ namespace Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
@@ -39,7 +39,9 @@ namespace Infrastructure.Data
                 .HasOne(u => u.Rol)
                 .WithMany(r => r.Usuarios)
                 .HasForeignKey(u => u.IdRol);
-            // Configurar la relación uno a muchos entre Hotel y habitación
+
+
+            // Configurar la relación uno a muchos entre Hotel y Habitación
             modelBuilder.Entity<Habitacion>()
                .HasOne(h => h.Hotel)
                .WithMany(h => h.Habitaciones)
@@ -51,34 +53,51 @@ namespace Infrastructure.Data
                .WithMany(h => h.Habitaciones)
                .HasForeignKey(h => h.IdTipoHabitacion);
 
-            // Configurar la precicion de la tabla
+            // Configurar la preción de la tabla
             modelBuilder.Entity<Habitacion>()
                 .Property(h => h.CostoBase)
                 .HasColumnType("decimal(18,2)");
 
             modelBuilder.Entity<HotelPreferido>(entity =>
             {
-                // Configuración de la clave primaria
+                entity.ToTable("HotelPreferido");  // Asegúrate de usar el nombre correcto de la tabla en la base de datos
                 entity.HasKey(hp => hp.IdPreferido);
 
-                // Configuración de la relación con Usuario
                 entity.HasOne(hp => hp.Usuario)
                       .WithMany(u => u.HotelesPreferidos)
                       .HasForeignKey(hp => hp.IdUsuario)
-                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
+                      .OnDelete(DeleteBehavior.Cascade);
 
-                // Configuración de la relación con Hotel
                 entity.HasOne(hp => hp.Hotel)
                       .WithMany(h => h.HotelesPreferidos)
                       .HasForeignKey(hp => hp.IdHotel)
-                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
 
+            modelBuilder.Entity<Reserva>(entity =>
+            {
+                // Configuración de la clave primaria
+                entity.HasKey(r => r.IdReserva);
+
+                // Configuración de la relación con Usuario
+                entity.HasOne(r => r.Usuario)
+                      .WithMany(u => u.Reservas)  // 'Reservas' debe ser una colección en 'User'
+                      .HasForeignKey(r => r.IdUsuario)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Configuración de la relación con Habitacion
+                entity.HasOne(r => r.Habitacion)
+                      .WithMany(h => h.Reserva)  // 'Reservas' debe ser una colección en 'Habitacion'
+                      .HasForeignKey(r => r.IdHabitacion)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
             modelBuilder.Entity<Role>().HasData(
-            new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
-            new Role { Id = 2, Nombre = "token generate", Codigo = "token_gen" }   
+                new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
+                new Role { Id = 2, Nombre = "token generate", Codigo = "token_gen" }
             );
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -90,8 +109,11 @@ namespace Infrastructure.Data
                     Email = "soulreavers214@gmail.com",
                     Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
                     IdRol = 2 // Asegúrate de que este es el Id del rol "token"
+                    Genero="Masculino",
+                    Telefono="3000000000"
                 }
             );
+
             modelBuilder.Entity<Hotel>().HasData(
                 new Hotel
                 {
@@ -117,7 +139,7 @@ namespace Infrastructure.Data
                     Ubicacion = "Montañas del Norte",
                     Estado = 1
                 }
-             );
+            );
 
             modelBuilder.Entity<TiposHabitacion>().HasData(
                 new TiposHabitacion
@@ -193,8 +215,6 @@ namespace Infrastructure.Data
                     IdHotel = 2
                 }
             );
-
-
         }
     }
 }

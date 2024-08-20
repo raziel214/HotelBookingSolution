@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/windows/servercore:ltsc2019
+    environment:
+      SA_PASSWORD: "YourStrong@Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    isolation: process
+
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HotelReservationsDB;User Id=Empleados;Password=Taylor/1214;TrustServerCertificate=true;
+    isolation: process

@@ -76,10 +76,7 @@ builder.Services.AddScoped<IHotelesPreferidosService, HotelesPreferidosService>(
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-// Generar hash de la contraseña (esto es solo para demostración o prueba)
-string plainPassword = "Taylor/1214.";
-string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainPassword);
-Console.WriteLine($"Hashed Password: {hashedPassword}"); // Solo para desarrollo/prueba
+
 
 
 

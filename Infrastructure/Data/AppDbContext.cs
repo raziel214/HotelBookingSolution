@@ -82,20 +82,22 @@ namespace Infrastructure.Data
 
                 // Configuración de la relación con Usuario
                 entity.HasOne(r => r.Usuario)
-                      .WithMany(u => u.Reservas)  // 'Reservas' debe ser una colección en 'User'
+                      .WithMany(u => u.Reservas)  // Cada usuario puede tener múltiples reservas
                       .HasForeignKey(r => r.IdUsuario)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
 
                 // Configuración de la relación con Habitacion
                 entity.HasOne(r => r.Habitacion)
-                      .WithMany(h => h.Reserva)  // 'Reservas' debe ser una colección en 'Habitacion'
+                      .WithMany(h => h.Reserva)  // Cada habitación puede estar en múltiples reservas
                       .HasForeignKey(r => r.IdHabitacion)
-                      .OnDelete(DeleteBehavior.Cascade);
+                      .OnDelete(DeleteBehavior.Cascade);  // Configura el comportamiento en cascada
             });
+
 
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Nombre = "administrador", Codigo = "admin" },
-                new Role { Id = 2, Nombre = "token generate", Codigo = "token_gen" }
+                new Role { Id = 2, Nombre = "token generate", Codigo = "token" },
+                new Role { Id = 3, Nombre = "Viajero", Codigo = "vjh" }
             );
 
             modelBuilder.Entity<User>().HasData(
@@ -108,9 +110,36 @@ namespace Infrastructure.Data
                     TipoDocumento = "CC",
                     Email = "soulreavers214@gmail.com",
                     Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
-                    IdRol = 2 // Asegúrate de que este es el Id del rol "token"
+                    IdRol = 2, // Asegúrate de que este es el Id del rol "token"
                     Genero="Masculino",
                     Telefono="3000000000"
+                },
+                new User
+                {
+                    Id = 2,
+                    Nombre = "John alex",
+                    Apellido = "Quintero",
+                    Documento = 94042673,
+                    TipoDocumento = "CC",
+                    Email = "soulreavers214@gmail.com",
+                    Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
+                    IdRol = 2, // Asegúrate de que este es el Id del rol "token"
+                    Genero = "Masculino",
+                    Telefono = "3000000000"
+                },
+
+                new User
+                {
+                    Id = 3,
+                    Nombre = "Angie tatiana",
+                    Apellido = "correa Orozco",
+                    Documento = 94042673,
+                    TipoDocumento = "CC",
+                    Email = "soulreavers214@gmail.com",
+                    Password = "$2a$11$BLPLcNgQZvehRDi0jaz1CuRYX.CZqIEHrWU3uYaHKrli/tjbpchL.",//  
+                    IdRol = 2, // Asegúrate de que este es el Id del rol "token"
+                    Genero = "Femenino",
+                    Telefono = "3000000000"
                 }
             );
 

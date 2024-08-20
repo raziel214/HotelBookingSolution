@@ -1,26 +1,27 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809 AS base
+# Usar la imagen base de ASP.NET Core 8.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
-ARG BUILD_CONFIGURATION=Release
+# Imagen para construir el proyecto
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ["HotelBookingSolution.csproj", "."]
-RUN dotnet restore "./HotelBookingSolution.csproj"
+
+# Copiar el archivo de proyecto y restaurar dependencias
+COPY ["WebApi/WebApi.csproj", "WebApi/"]
+RUN dotnet restore "WebApi/WebApi.csproj"
+
+# Copiar el resto del código y construir el proyecto
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./HotelBookingSolution.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+WORKDIR "/src/WebApi"
+RUN dotnet build "WebApi.csproj" -c Release -o /app/build
 
+# Publicar el proyecto
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./HotelBookingSolution.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "WebApi.csproj" -c Release -o /app/publish
 
+# Imagen final con el runtime de ASP.NET Core
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "HotelBookingSolution.dll"]
+ENTRYPOINT ["dotnet", "WebApi.dll"]

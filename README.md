@@ -115,7 +115,7 @@ Se recomienda agregar un prefijo a las etiquetas, por ejemplo, la letra «v» si
    ```bash
    https://visualstudio.microsoft.com/es/downloads/
 
-5. Abrir el proyecto en visual studio y compilarlo, configurar  la base de datos  parametrizar el usuario en el archivo app.settings y ejecutar el siguiente comando :
+5. Abrir el proyecto en visual studio y compilarlo, crear la base de datos HotelReservationsDB  y configurar  la base de datos  parametrizar el usuario en el archivo app.settings y ejecutar el siguiente comando :
    ```bash
    update-database en la consola de paquetes nugets
 6. Para agregar una nueva migración se debe abrir la terminal ingresar en la ruta del paquete infraestructure y ejecutar el siguiente comando:

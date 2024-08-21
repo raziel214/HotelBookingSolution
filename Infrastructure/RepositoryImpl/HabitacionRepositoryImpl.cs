@@ -21,6 +21,16 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<Habitacion> CreateHabitacionAsync(Habitacion habitacion)
         {
+             var idTipoHabitacion = await _context.TiposHabitaciones.FindAsync(habitacion.IdTipoHabitacion);
+             var idHotel = await _context.Hoteles.FindAsync(habitacion.IdHotel);
+            if (idTipoHabitacion == null)
+            {
+                throw new Exception("El tipo de habitacion no existe");
+            }
+            if (idHotel == null)
+            {
+                throw new Exception("El hotel no existe");
+            }
             _context.Habitaciones.Add(habitacion);
             await _context.SaveChangesAsync();
             return habitacion;

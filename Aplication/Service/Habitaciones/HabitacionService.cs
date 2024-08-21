@@ -14,19 +14,34 @@ namespace Aplication.Service.Habitaciones
     {
         private readonly IMapper _mapper;
         private readonly IHabitacionRepository _habitacionRepository;
+        private readonly IHotelRepository _hotelRepository;
+        private readonly ITipoHabitacionRepository _tipoHabitacionRepository;
 
-        public HabitacionService(IHabitacionRepository habitacionRepository, IMapper mapper)
+       
+        public HabitacionService(IMapper mapper, IHabitacionRepository habitacionRepository, IHotelRepository hotelRepository, ITipoHabitacionRepository tipoHabitacionRepository)
         {
-            _habitacionRepository = habitacionRepository;
             _mapper = mapper;
-        }
+            _habitacionRepository = habitacionRepository;
+            _hotelRepository = hotelRepository;
+            _tipoHabitacionRepository = tipoHabitacionRepository;
+        }   
 
         public async Task<HabitacionRead> CreateHabitacionAsync(HabitacionCreate habitacion)
         {
-            Habitacion entity= _mapper.Map<Habitacion>(habitacion);
-            entity = await _habitacionRepository.CreateHabitacionAsync(entity);
-            HabitacionRead dto = _mapper.Map<HabitacionRead>(entity);
-            return dto;
+
+            var habitaciontipo= await _tipoHabitacionRepository.GetHabitacionTipoByIdAsync(habitacion.IdTipoHabitacion);
+            var hotel = await _hotelRepository.GetHotelByIdAsync(habitacion.IdHotel);
+            if (habitaciontipo != null && hotel!=null)
+            {
+                var habitacionEntity = _mapper.Map<Habitacion>(habitacion);
+                await _habitacionRepository.CreateHabitacionAsync(habitacionEntity);
+                await _habitacionRepository.SaveChangesAsync();
+                return _mapper.Map<HabitacionRead>(habitacionEntity);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"El tipo de habitacion con el ID {habitacion.IdTipoHabitacion} no fue encontrado.");
+            }
         }
 
         public async Task<Habitacion> DeleteHabitacionByIdAsync(int id)
@@ -117,7 +132,17 @@ namespace Aplication.Service.Habitaciones
 
         public async  Task UpdateHabitacionAsync(int id, Habitacion habitacion)
         {
-            await _habitacionRepository.UpdateHabitacionAsync(id,habitacion);
+            var habitaciontipo = await _tipoHabitacionRepository.GetHabitacionTipoByIdAsync(habitacion.IdTipoHabitacion);
+            var hotel = await _hotelRepository.GetHotelByIdAsync(habitacion.IdHotel);
+            if (habitaciontipo != null && hotel != null) 
+            {
+                await _habitacionRepository.UpdateHabitacionAsync(id, habitacion);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"El tipo de habitacion con el ID {habitacion.IdTipoHabitacion} o el hotel con el ID {habitacion.IdHotel} no fue encontrado.");
+            }
+                
             
         }
         

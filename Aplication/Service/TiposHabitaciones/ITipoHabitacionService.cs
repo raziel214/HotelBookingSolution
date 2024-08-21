@@ -10,11 +10,11 @@ namespace Aplication.Service.TiposHabitaciones
 {
     public interface ITipoHabitacionService
     {
-        Task<IEnumerable<TiposHabitacion>> GetAllHabitacionAsync();
-        Task<TiposHabitacion> GetHabitacionByIdAsync(int id);
-        Task<TiposHabitacion> GetHabitacionByNombreAsync(string nombre);
-        Task<TipoHabitacionRead> CreateHabitacionAsync(TipoHabitacionCreate habitacion);
-        Task UpdateHabitacionAsync(TiposHabitacion habitacion);
-        Task<TiposHabitacion> DeleteHabitacionAsync(int id);
+        Task<IEnumerable<TiposHabitacion>> GetAllHabitacionTipoAsync();
+        Task<TiposHabitacion> GetHabitacionTipoByIdAsync(int id);
+        Task<TiposHabitacion> GetHabitacionTipoByNombreAsync(string nombre);
+        Task<TipoHabitacionRead> CreateHabitacionTipoAsync(TipoHabitacionCreate habitacion);
+        Task UpdateHabitacionTipoAsync(TiposHabitacion habitacion);
+        Task<TiposHabitacion> DeleteHabitacionTipoAsync(int id);
     }
 }

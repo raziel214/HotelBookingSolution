@@ -19,13 +19,13 @@ namespace Infrastructure.RepositoryImpl
             _context = context;
         }
 
-        public async Task<TiposHabitacion> CreateHabitacionAsync(TiposHabitacion habitacion)
+        public async Task<TiposHabitacion> CreateTipoHabitacionAsync(TiposHabitacion habitacion)
         {
             _context.TiposHabitaciones.Add(habitacion);
             await _context.SaveChangesAsync();
             return habitacion;
         }
-        public async Task<TiposHabitacion> DeleteHabitacionAsync(int id)
+        public async Task<TiposHabitacion> DeleteHabitacionTipoAsync(int id)
         {
             var habitacion = await _context.TiposHabitaciones.FindAsync(id);
             if (habitacion != null)
@@ -39,17 +39,17 @@ namespace Infrastructure.RepositoryImpl
                 throw new Exception("La habitación no existe");
             }
         }
-        public async Task<IEnumerable<TiposHabitacion>> GetAllHabitacionAsync()
+        public async Task<IEnumerable<TiposHabitacion>> GetAllHabitacionTipoAsync()
         {
             return await _context.TiposHabitaciones.ToListAsync();
         }
 
-        public async Task<TiposHabitacion> GetHabitacionByIdAsync(int id)
+        public async Task<TiposHabitacion> GetHabitacionTipoByIdAsync(int id)
         {
             return await _context.TiposHabitaciones.FindAsync(id);
         }
 
-        public async Task<TiposHabitacion> GetHabitacionByNombreAsync(string nombre)
+        public async Task<TiposHabitacion> GetHabitacionTipoByNombreAsync(string nombre)
         {
             return await _context.TiposHabitaciones.FirstOrDefaultAsync(h => h.Nombre == nombre);
         }
@@ -59,7 +59,7 @@ namespace Infrastructure.RepositoryImpl
             return await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateHabitacionAsync(TiposHabitacion habitacion)
+        public async Task UpdateHabitacionTipoAsync(TiposHabitacion habitacion)
         {
             _context.TiposHabitaciones.Update(habitacion);
             await _context.SaveChangesAsync();

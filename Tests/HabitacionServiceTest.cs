@@ -19,12 +19,16 @@ namespace Tests
         private readonly Mock<IHabitacionRepository> _habitacionRepositoryMock;
         private readonly HabitacionService _habitacionService;
         private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<IHotelRepository>  _hotelRepositoryMock;
+        private readonly new Mock<ITipoHabitacionRepository> _tipoHabitacionRepositoryMock ;
 
         public HabitacionServiceTest()
         {
             _habitacionRepositoryMock = new Mock<IHabitacionRepository>();
+            _hotelRepositoryMock= new Mock<IHotelRepository>();
+            _tipoHabitacionRepositoryMock= new Mock<ITipoHabitacionRepository>();
             _mapperMock = new Mock<IMapper>();
-            _habitacionService = new HabitacionService(_habitacionRepositoryMock.Object, _mapperMock.Object);
+            _habitacionService = new HabitacionService( _mapperMock.Object, _habitacionRepositoryMock.Object,_hotelRepositoryMock.Object, _tipoHabitacionRepositoryMock.Object);
         }
 
         [Fact]

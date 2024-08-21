@@ -123,7 +123,9 @@ Se recomienda agregar un prefijo a las etiquetas, por ejemplo, la letra «v» si
    dotnet ef migrations add Nombre de la migración --startup-project ../WebApi.csproj
 7. esto crea datos por default para probar la aplicación el pass del usuario es:
    ```bash
-   string plainPassword = "Taylor/1214.";
+   Email soulreavers214@gmail.com Password "Taylor/1214."
+   Endponit de generacion de tokens 
+   http://localhost:62329/login
 ## Docker
 8. en la configuracion de docker se utilizó la configuración sugerida por visual studio  con la siguiente imagen
    ```bash

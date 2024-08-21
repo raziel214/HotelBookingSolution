@@ -45,11 +45,11 @@ namespace Tests
                 new TiposHabitacion { IdTipoHabitacion = 2, Nombre = "Habitación Doble" }
             };
 
-            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetAllHabitacionAsync())
+            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetAllHabitacionTipoAsync())
                 .ReturnsAsync(habitaciones);
 
             // Act
-            var result = await _tiposHabitacionService.GetAllHabitacionAsync();
+            var result = await _tiposHabitacionService.GetAllHabitacionTipoAsync();
 
             // Assert
             Assert.NotNull(result);
@@ -58,16 +58,16 @@ namespace Tests
         }
 
         [Fact]
-        public async Task GetHabitacionByIdAsync_ValidId_ReturnsHabitacion()
+        public async Task GetTipoHabitacionByIdAsync_ValidId_ReturnsHabitacion()
         {
             // Arrange
             var habitacion = new TiposHabitacion { IdTipoHabitacion = 1, Nombre = "Habitación Sencilla" };
 
-            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetHabitacionByIdAsync(1))
+            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetHabitacionTipoByIdAsync(1))
                 .ReturnsAsync(habitacion);
 
             // Act
-            var result = await _tiposHabitacionService.GetHabitacionByIdAsync(1);
+            var result = await _tiposHabitacionService.GetHabitacionTipoByIdAsync(1);
 
             // Assert
             Assert.NotNull(result);
@@ -75,71 +75,71 @@ namespace Tests
         }
 
         [Fact]
-        public async Task GetHabitacionByNombreAsync_ValidNombre_ReturnsHabitacion()
+        public async Task GetHabitacionTipoByNombreAsync_ValidNombre_ReturnsHabitacion()
         {
             // Arrange
             var habitacion = new TiposHabitacion { IdTipoHabitacion = 1, Nombre = "Habitación Sencilla" };
 
-            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetHabitacionByNombreAsync("Habitación Sencilla"))
+            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetHabitacionTipoByNombreAsync("Habitación Sencilla"))
                 .ReturnsAsync(habitacion);
 
             // Act
-            var result = await _tiposHabitacionService.GetHabitacionByNombreAsync("Habitación Sencilla");
+            var result = await _tiposHabitacionService.GetHabitacionTipoByNombreAsync("Habitación Sencilla");
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(habitacion, result);
         }
         [Fact]
-        public async Task CreateHabitacionAsync_ValidHabitacion_ReturnsCreatedHabitacion()
+        public async Task CreateHabitacionTipoAsync_ValidHabitacion_ReturnsCreatedHabitacion()
         {
             // Arrange
             var habitacionCreate = new TipoHabitacionCreate { Nombre = "Habitación Sencilla", Descripcion = "Descripción" };
             var habitacion = new TiposHabitacion { IdTipoHabitacion = 1, Nombre = "Habitación Sencilla" };
 
             _mapperMock.Setup(m => m.Map<TiposHabitacion>(habitacionCreate)).Returns(habitacion);
-            _tiposHabitacionRepositoryMock.Setup(repo => repo.CreateHabitacionAsync(habitacion)).ReturnsAsync(habitacion);
+            _tiposHabitacionRepositoryMock.Setup(repo => repo.CreateTipoHabitacionAsync(habitacion)).ReturnsAsync(habitacion);
             _mapperMock.Setup(m => m.Map<TipoHabitacionRead>(habitacion)).Returns(new TipoHabitacionRead { IdTipoHabitacion = 1, Nombre = "Habitación Sencilla" });
 
             // Act
-            var result = await _tiposHabitacionService.CreateHabitacionAsync(habitacionCreate);
+            var result = await _tiposHabitacionService.CreateTipoHabitacionAsync(habitacionCreate);
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(habitacion.IdTipoHabitacion, result.IdTipoHabitacion);
         }
         [Fact]
-        public async Task UpdateHabitacionAsync_ValidHabitacion_UpdatesHabitacion()
+        public async Task UpdateHabitacionTipoAsync_ValidHabitacion_UpdatesHabitacion()
         {
             // Arrange
             var habitacion = new TiposHabitacion { IdTipoHabitacion = 1, Nombre = "Habitación Sencilla" };
 
-            _tiposHabitacionRepositoryMock.Setup(repo => repo.UpdateHabitacionAsync(habitacion)).Returns(Task.CompletedTask);
+            _tiposHabitacionRepositoryMock.Setup(repo => repo.UpdateHabitacionTipoAsync(habitacion)).Returns(Task.CompletedTask);
 
             // Act
-            await _tiposHabitacionService.UpdateHabitacionAsync(habitacion);
+            await _tiposHabitacionService.UpdateHabitacionTipoAsync(habitacion);
 
             // Assert
-            _tiposHabitacionRepositoryMock.Verify(repo => repo.UpdateHabitacionAsync(habitacion), Times.Once);
+            _tiposHabitacionRepositoryMock.Verify(repo => repo.UpdateHabitacionTipoAsync(habitacion), Times.Once);
         }
 
         [Fact]
-        public async Task DeleteHabitacionAsync_ValidId_DeletesHabitacion()
+        public async Task DeleteHabitacionTipoAsync_ValidId_DeletesHabitacion()
         {
             // Arrange
             var idHabitacion = 1;
             var habitacion = new TiposHabitacion { IdTipoHabitacion = idHabitacion, Nombre = "Habitación Sencilla" };
 
-            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetHabitacionByIdAsync(idHabitacion)).ReturnsAsync(habitacion);
-            _tiposHabitacionRepositoryMock.Setup(repo => repo.DeleteHabitacionAsync(idHabitacion)).ReturnsAsync(habitacion);
+            _tiposHabitacionRepositoryMock.Setup(repo => repo.GetHabitacionTipoByIdAsync(idHabitacion)).ReturnsAsync(habitacion);
+            _tiposHabitacionRepositoryMock.Setup(repo => repo.DeleteHabitacionTipoAsync(idHabitacion)).ReturnsAsync(habitacion);
 
             // Act
-            var result = await _tiposHabitacionService.DeleteHabitacionAsync(idHabitacion);
+            var result = await _tiposHabitacionService.DeleteHabitacionTipoAsync(idHabitacion);
 
             // Assert
             Assert.NotNull(result);
             Assert.Equal(idHabitacion, result.IdTipoHabitacion);
-            _tiposHabitacionRepositoryMock.Verify(repo => repo.DeleteHabitacionAsync(idHabitacion), Times.Once);
+            _tiposHabitacionRepositoryMock.Verify(repo => repo.DeleteHabitacionTipoAsync(idHabitacion), Times.Once);
         }
 
 

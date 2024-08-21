@@ -21,36 +21,63 @@ namespace Aplication.Service.TiposHabitaciones
             _mapper = mapper;
         }
 
-        public async Task<TipoHabitacionRead> CreateHabitacionAsync(TipoHabitacionCreate tipoHabitacion)
+        public Task<TipoHabitacionRead> CreateHabitacionAsync(TipoHabitacionCreate habitacion)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TipoHabitacionRead> CreateHabitacionTipoAsync(TipoHabitacionCreate habitacion)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<TipoHabitacionRead> CreateTipoHabitacionAsync(TipoHabitacionCreate tipoHabitacion)
         {
             var entity = _mapper.Map<TiposHabitacion>(tipoHabitacion);
-            entity = await _tipoHabitacionRepository.CreateHabitacionAsync(entity);
+            entity = await _tipoHabitacionRepository.CreateTipoHabitacionAsync(entity);
             var dto = _mapper.Map<TipoHabitacionRead>(entity);
             return dto;
         }
-        public async Task<TiposHabitacion> DeleteHabitacionAsync(int id)
+
+        public Task<TiposHabitacion> DeleteHabitacionAsync(int id)
         {
-            var tipoHabitacion = await _tipoHabitacionRepository.GetHabitacionByIdAsync(id);
+            throw new NotImplementedException();
+        }
+
+        public async Task<TiposHabitacion> DeleteHabitacionTipoAsync(int id)
+        {
+            var tipoHabitacion = await _tipoHabitacionRepository.DeleteHabitacionTipoAsync(id);
             if (tipoHabitacion == null)
             {
                 throw new KeyNotFoundException($"El tipo de habitación con ID {id} no fue encontrado.");
             }
-            await _tipoHabitacionRepository.DeleteHabitacionAsync(id);
+            await _tipoHabitacionRepository.DeleteHabitacionTipoAsync(id);
             await _tipoHabitacionRepository.SaveChangesAsync();
             return tipoHabitacion;
         }
-        public async Task<IEnumerable<TiposHabitacion>> GetAllHabitacionAsync()
+
+       
+
+        public async Task<IEnumerable<TiposHabitacion>> GetAllHabitacionTipoAsync()
         {
-            return await _tipoHabitacionRepository.GetAllHabitacionAsync();
-        }
-        public async Task<TiposHabitacion> GetHabitacionByIdAsync(int id)
-        {
-            return await _tipoHabitacionRepository.GetHabitacionByIdAsync(id);
+            return await _tipoHabitacionRepository.GetAllHabitacionTipoAsync();
         }
 
-        public async Task<TiposHabitacion> GetHabitacionByNombreAsync(string nombre)
+       
+
+        public Task<TiposHabitacion> GetHabitacionByNombreAsync(string nombre)
         {
-           var tipoHabitacion = await _tipoHabitacionRepository.GetHabitacionByNombreAsync(nombre);
+            throw new NotImplementedException();
+        }
+
+        public async Task<TiposHabitacion> GetHabitacionTipoByIdAsync(int id)
+        {
+            return await _tipoHabitacionRepository.GetHabitacionTipoByIdAsync(id);
+        }
+
+        public async Task<TiposHabitacion> GetHabitacionTipoByNombreAsync(string nombre)
+        {
+           var tipoHabitacion = await _tipoHabitacionRepository.GetHabitacionTipoByNombreAsync(nombre);
             if (tipoHabitacion == null)
             {
                 throw new KeyNotFoundException($"El tipo de habitación con nombre {nombre} no fue encontrado.");
@@ -58,9 +85,11 @@ namespace Aplication.Service.TiposHabitaciones
             return tipoHabitacion;
         }
 
-        public async Task UpdateHabitacionAsync(TiposHabitacion habitacion)
+       
+
+        public async Task UpdateHabitacionTipoAsync(TiposHabitacion habitacion)
         {
-            await _tipoHabitacionRepository.UpdateHabitacionAsync(habitacion);
+            await _tipoHabitacionRepository.UpdateHabitacionTipoAsync(habitacion);
             
         }
     }

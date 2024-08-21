@@ -9,12 +9,12 @@ namespace Domain.Repository
 {
     public interface ITipoHabitacionRepository
     {
-        Task<IEnumerable<TiposHabitacion>> GetAllHabitacionAsync();
-        Task<TiposHabitacion> GetHabitacionByIdAsync(int id);
-        Task<TiposHabitacion> GetHabitacionByNombreAsync(string nombre);
-        Task<TiposHabitacion> CreateHabitacionAsync(TiposHabitacion habitacion);
-        Task UpdateHabitacionAsync(TiposHabitacion habitacion);
-        Task<TiposHabitacion> DeleteHabitacionAsync(int id);
+        Task<IEnumerable<TiposHabitacion>> GetAllHabitacionTipoAsync();
+        Task<TiposHabitacion> GetHabitacionTipoByIdAsync(int id);
+        Task<TiposHabitacion> GetHabitacionTipoByNombreAsync(string nombre);
+        Task<TiposHabitacion> CreateTipoHabitacionAsync(TiposHabitacion habitacion);
+        Task UpdateHabitacionTipoAsync(TiposHabitacion habitacion);
+        Task<TiposHabitacion> DeleteHabitacionTipoAsync(int id);
         Task<int> SaveChangesAsync();
 
 

@@ -20,16 +20,16 @@ namespace WebApi.Controllers.TiposHabitaciones
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetAllHabitacion()
+        public async Task<ActionResult> GetAllHabitacionTipoAsync()
         {
-            var habitaciones = await _tipoHabitacionService.GetAllHabitacionAsync();
+            var habitaciones = await _tipoHabitacionService.GetAllHabitacionTipoAsync();
             return new JsonResult(habitaciones);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetHabitacionById(int id)
+        public async Task<ActionResult> GetHabitacionTipoByIdAsync(int id)
         {
-            var habitacion = await _tipoHabitacionService.GetHabitacionByIdAsync(id);
+            var habitacion = await _tipoHabitacionService.GetHabitacionTipoByIdAsync(id);
             if (habitacion == null)
             {
                 return NotFound();
@@ -38,28 +38,28 @@ namespace WebApi.Controllers.TiposHabitaciones
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateHabitacion(TipoHabitacionCreate habitacion)
+        public async Task<ActionResult> CreateHabitacionTipoAsync(TipoHabitacionCreate habitacion)
         {
-            var createdHabitacion = await _tipoHabitacionService.CreateHabitacionAsync(habitacion);
-            return CreatedAtAction(nameof(GetHabitacionById), new { id = createdHabitacion.IdTipoHabitacion }, createdHabitacion);
+            var createdHabitacion = await _tipoHabitacionService.CreateHabitacionTipoAsync(habitacion);
+            return CreatedAtAction(nameof(GetHabitacionTipoByIdAsync), new { id = createdHabitacion.IdTipoHabitacion }, createdHabitacion);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateHabitacion(int id, TiposHabitacion habitacion)
+        public async Task<IActionResult> UpdateHabitacionTipoAsync(int id, TiposHabitacion habitacion)
         {
             if (id != habitacion.IdTipoHabitacion)
             {
                 return BadRequest();
             }
 
-            await _tipoHabitacionService.UpdateHabitacionAsync(habitacion);
+            await _tipoHabitacionService.UpdateHabitacionTipoAsync(habitacion);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHabitacion(int id)
+        public async Task<IActionResult> DeleteHabitacionTipoAsync(int id)
         {
-            await _tipoHabitacionService.DeleteHabitacionAsync(id);
+            await _tipoHabitacionService.DeleteHabitacionTipoAsync(id);
             return NoContent();
         }
     }

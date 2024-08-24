@@ -13,9 +13,19 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurar Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // Configurar JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -37,13 +47,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
-
-
-// Configurar la cadena de conexión
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-connectionString = Environment.ExpandEnvironmentVariables(connectionString);
-Console.WriteLine("Connection String: " + connectionString);
-
 
 // Registrar ApplicationDbContext con la cadena de conexión
 builder.Services.AddDbContext<AppDbContext>(options =>

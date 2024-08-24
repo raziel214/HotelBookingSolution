@@ -89,12 +89,18 @@ namespace Infrastructure.RepositoryImpl
                      .Where(h => h.CostoBase == CostoBase)
                      .ToListAsync();
         }
-
-        public async Task<IEnumerable<Habitacion>> GetHabitacionByStatusAsync(int Estado)
+        
+        public async Task<IEnumerable<Habitacion>> GetHabitacionByStatusAndCapacityAsync(int Estado, int cantidadPersonas)
         {
-            return await _context.Habitaciones
-                .Where(h => h.Estado == Estado)
-                .ToListAsync();
+            if (cantidadPersonas <= 3)
+            {
+                return await _context.Habitaciones
+               .Where(h => h.Estado == Estado&& h.CantidadPersonas>=cantidadPersonas)
+               .ToListAsync();
+            }
+            else {
+                throw new Exception("No hay habitaciones disponibles con esa capacidad");
+            }
         }
 
         public async Task<IEnumerable<Habitacion>> GetHabitacionByTypeAsync(int type)

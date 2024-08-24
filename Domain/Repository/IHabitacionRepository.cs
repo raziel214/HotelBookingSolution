@@ -14,7 +14,7 @@ namespace Domain.Repository
         Task<Habitacion> GetHabitacionByCodeAsync(int code);
         Task<IEnumerable<Habitacion>> GetHabitacionByTypeAsync(int type);
         Task<IEnumerable<Habitacion>> GetHabitacionByPriceAsync(int price);
-        Task<IEnumerable<Habitacion>> GetHabitacionByStatusAsync(int status);
+        Task<IEnumerable<Habitacion>> GetHabitacionByStatusAndCapacityAsync(int status, int cantidadPersonas);
         Task<IEnumerable<Habitacion>> GetHabitacionByHotelAsync(int hotelId);
         Task<Habitacion> CreateHabitacionAsync(Habitacion habitacion);
         Task UpdateHabitacionAsync(int id,Habitacion habitacion);

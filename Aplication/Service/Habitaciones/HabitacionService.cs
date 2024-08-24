@@ -107,12 +107,12 @@ namespace Aplication.Service.Habitaciones
         }
 
 
-        public async Task<IEnumerable<Habitacion>> GetHabitacionByStatusAsync(int status)
+        public async Task<IEnumerable<Habitacion>> GetHabitacionByStatusAndCapacityAsync(int status,int cantidadPersonas)
         {
-            var habitaciones = await _habitacionRepository.GetHabitacionByStatusAsync(status);
+            var habitaciones = await _habitacionRepository.GetHabitacionByStatusAndCapacityAsync(status,cantidadPersonas);
             if (habitaciones == null || !habitaciones.Any())
             {
-                throw new KeyNotFoundException($"No se encontraron habitaciones con estado {status}.");
+                throw new KeyNotFoundException($"No se encontraron habitaciones con estado {status} o la capacidad de personas requeridad{cantidadPersonas}.");
             }
             return habitaciones;
         }

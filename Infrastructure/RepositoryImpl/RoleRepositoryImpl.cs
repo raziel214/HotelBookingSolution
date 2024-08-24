@@ -43,7 +43,7 @@ namespace Infrastructure.RepositoryImpl
             else
             {
                 // Si el rol no existe, lanzar una excepción
-                throw new Exception("El rol no existe");
+                throw new KeyNotFoundException("El rol no existe");
             }
 
 
@@ -57,12 +57,22 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<Role> GetRolByIdAsync(int id)
         {
-            return await _context.Roles.FindAsync(id);
+            var rol = await _context.Roles.FindAsync(id);
+            if(rol == null)
+            {
+                throw new KeyNotFoundException("El rol no existe");
+            }
+            return rol;
         }
 
         public async Task<Role> GetRolByNameAsync(string name)
         {
-            return await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == name);
+            var rol = await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == name);
+            if(rol == null)
+            {
+                throw new KeyNotFoundException("El rol no existe");
+            }
+            return rol;
         }
 
         public async  Task<int> SaveChangesAsync()
@@ -72,6 +82,11 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task UpdateRolAsync(Role rol)
         {
+            var entity = await _context.Roles.FindAsync(rol.Id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("El rol no existe");
+            }
             _context.Roles.Update(rol);
             await _context.SaveChangesAsync();
         }

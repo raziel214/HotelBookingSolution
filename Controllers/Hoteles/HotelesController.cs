@@ -23,24 +23,40 @@ namespace WebApi.Controllers.Hoteles
         [HttpGet]
         public async Task<ActionResult> GetAllHotelsAsync()
         {
-            _logger.LogInformation("Intentando obtener todos los hoteles");
-            var hoteles = await _hotelService.GetAllHotelsAsync();
-            _logger.LogInformation("Hoteles obtenidos exitosamente");
-            return new JsonResult(hoteles);
+            try
+            {
+                _logger.LogInformation("Intentando obtener todos los hoteles");
+                var hoteles = await _hotelService.GetAllHotelsAsync();
+                _logger.LogInformation("Hoteles obtenidos exitosamente");
+                return new JsonResult(hoteles);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener todos los hoteles");
+                return BadRequest();
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetHotelById(int id)
         {
-            _logger.LogInformation($"Intentando consultar un hotel por ID: {id}");
-            var hotel = await _hotelService.GetHotelByIdAsync(id);
-            if (hotel == null)
+            try
             {
-                _logger.LogWarning($"El hotel con el ID: {id} no fue encontrado");
+                _logger.LogInformation($"Intentando consultar un hotel por ID: {id}");
+                var hotel = await _hotelService.GetHotelByIdAsync(id);
+                _logger.LogInformation($"Hotel encontrado con el ID {id} encontrado");
+                return Ok(hotel);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, $"Hotel con el id {id} no fue encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Hotel encontrado con el ID {id} encontrado");
-            return Ok(hotel);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener un hotel");
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -63,22 +79,23 @@ namespace WebApi.Controllers.Hoteles
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHotelAsync(int id, Hotel hotel)
         {
-            _logger.LogInformation($"Intentando actualizar el hotel con ID: {id}");
-            if (id != hotel.IdHotel)
+            try {
+                _logger.LogInformation($"Intentando actualizar el hotel con ID: {id}");
+                var existingHotel = await _hotelService.GetHotelByIdAsync(id);
+                _logger.LogInformation($"Actualizando hotel con ID: {id}");
+                await _hotelService.UpdateHotelAsync(id, hotel);
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning($"El ID de la URL {id} no coincide con el ID del hotel {hotel.IdHotel}");
+                _logger.LogWarning(ex, $"Hotel con ID: {id} no encontrado");
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al actualizar el hotel con ID: {id}");
                 return BadRequest();
             }
-            var existingHotel = await _hotelService.GetHotelByIdAsync(id);
-
-            if (existingHotel == null)
-            {
-                _logger.LogWarning($"El hotel con el ID {id} no fue encontrado");
-                return NotFound();
-            }
-            _logger.LogInformation($"Actualizando hotel con ID: {id}");
-            await _hotelService.UpdateHotelAsync(id, hotel);
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
@@ -106,29 +123,44 @@ namespace WebApi.Controllers.Hoteles
         [HttpGet("byname/{name}")]
         public async Task<ActionResult> GetHotelByNameAsync(string name)
         {
-            _logger.LogInformation($"Intentando obtener hotel por nombre: {name}");
-            var hotel = await _hotelService.GetHotelByNameAsync(name);
-            if (hotel == null)
-            {
-                _logger.LogWarning($"Hotel con nombre: {name} no encontrado");
-                return NotFound();
+            try {
+                _logger.LogInformation($"Intentando obtener hotel por nombre: {name}");
+                var hotel = await _hotelService.GetHotelByNameAsync(name);
+                _logger.LogInformation($"Hotel con nombre: {name} encontrado");
+                return Ok(hotel);
             }
-            _logger.LogInformation($"Hotel con nombre: {name} encontrado");
-            return Ok(hotel);
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, $"Hotel con nombre: {name} no encontrado");
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al obtener hotel por nombre: {name}");
+                return BadRequest();
+            }
         }
 
         [HttpGet("bycode/{code}")]
         public async Task<ActionResult> GetHotelByCodeAsync(string code)
         {
-            _logger.LogInformation($"Intentando obtener hotel por código: {code}");
-            var hotel = await _hotelService.GetHotelByCodeAsync(code);
-            if (hotel == null)
-            {
-                _logger.LogWarning($"Hotel con código: {code} no encontrado");
-                return NotFound();
+            try {
+                _logger.LogInformation($"Intentando obtener hotel por código: {code}");
+                var hotel = await _hotelService.GetHotelByCodeAsync(code);
+
+                _logger.LogInformation($"Hotel con código: {code} encontrado");
+                return Ok(hotel);
             }
-            _logger.LogInformation($"Hotel con código: {code} encontrado");
-            return Ok(hotel);
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, $"Hotel con código: {code} no encontrado");
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al obtener hotel por código: {code}");
+                return BadRequest();
+            }
         }
 
 

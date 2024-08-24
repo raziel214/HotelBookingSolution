@@ -30,13 +30,21 @@ namespace Infrastructure.RepositoryImpl
         public async Task<HotelPreferido> DeleteHotelPreferidoByUserIdAsync(int idHotelPreferido)
         {
             var hotelPreferido = await GetHotelPreferidoByIdAsync(idHotelPreferido);
-            if (hotelPreferido != null)
-            {
-                _context.HotelesPreferidos.Remove(hotelPreferido);
-                await _context.SaveChangesAsync();
-            }
-            return hotelPreferido;
             
+                if(hotelPreferido!=null)
+                {
+                   _context.HotelesPreferidos.Remove(hotelPreferido);
+                    await _context.SaveChangesAsync();
+                    return hotelPreferido;
+                }
+                else if(hotelPreferido==null)
+                {
+                    throw new KeyNotFoundException("El hotel preferido no existe");
+                }
+                else
+                {
+                    throw new Exception("Error al eliminar el hotel preferido");
+                }
         }
 
         public async Task<IEnumerable<HotelPreferido>> GetAllHotelesPreferidosAsync()
@@ -46,17 +54,32 @@ namespace Infrastructure.RepositoryImpl
 
         public async  Task<IEnumerable<HotelPreferido>> GetHotelesPreferidosByUserIdAsync(int userId)
         {
-            return await _context.HotelesPreferidos.Where(h => h.IdUsuario == userId).ToListAsync();
+            var hotelPreferidos= await _context.HotelesPreferidos.Where(h => h.IdUsuario == userId).ToListAsync();
+            if (hotelPreferidos.Count == 0)
+            {
+                throw new KeyNotFoundException("No se encontraron hoteles preferidos para el usuario");
+            }
+            return hotelPreferidos;
         }
 
-        public Task<HotelPreferido> GetHotelPreferidoByUserIdHotelIdAsync(int userId, int hotelId)
+        public async Task<HotelPreferido> GetHotelPreferidoByUserIdHotelIdAsync(int userId, int hotelId)
         {
-            return _context.HotelesPreferidos.FirstOrDefaultAsync(h => h.IdUsuario == userId && h.IdHotel == hotelId);
+            var hotelPreferido= await _context.HotelesPreferidos.FirstOrDefaultAsync(h => h.IdUsuario == userId && h.IdHotel == hotelId);
+            if(hotelPreferido==null)
+            {
+                throw new KeyNotFoundException("No se encontro el hotel preferido");
+            }
+            return hotelPreferido;
         }
 
         public async Task<HotelPreferido> GetHotelPreferidoByIdAsync(int idHotelPreferido)
         {
-            return await _context.HotelesPreferidos.FindAsync(idHotelPreferido);
+            var hotelpreferido = await _context.HotelesPreferidos.FindAsync(idHotelPreferido);
+            if (hotelpreferido == null)
+            {
+                throw new KeyNotFoundException("El hotel preferido no existe");
+            }
+            return hotelpreferido;
         }
 
         public async  Task<int> SaveChangesAsync()
@@ -64,10 +87,16 @@ namespace Infrastructure.RepositoryImpl
             return await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateHotelPreferidoAsync(int userId, int hotelId)
+        public async Task UpdateHotelPreferidoAsync(int userId, HotelPreferido hotelPreferido)
         {
-            _context.HotelesPreferidos.Update(new HotelPreferido { IdUsuario = userId, IdHotel = hotelId });
+            var hotelPreferidotemp = await GetHotelPreferidoByUserIdHotelIdAsync(userId, hotelPreferido.IdHotel);
+            if(hotelPreferidotemp != null)
+            {
+                throw new KeyNotFoundException("El hotel preferido no existe");
+            }
+            _context.HotelesPreferidos.Update(hotelPreferido);
             await _context.SaveChangesAsync();
+
         }
 
         
@@ -79,8 +108,17 @@ namespace Infrastructure.RepositoryImpl
             {
                 _context.HotelesPreferidos.Remove(hotelPreferido);
                 await _context.SaveChangesAsync();
-            }   
-            return hotelPreferido;
+                return hotelPreferido;
+            }  
+            else if(hotelPreferido==null)
+            {
+                throw new KeyNotFoundException("El hotel preferido no existe");
+            }
+            else
+            {
+                throw new Exception("Error al eliminar el hotel preferido");
+            }
+            
         }
     }
 }

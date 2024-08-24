@@ -36,15 +36,23 @@ namespace WebApi.Controllers.Habitaciones
         [HttpGet("{id}")]
         public async Task<ActionResult> GetByHabitacionAsyncById(int id)
         {
-            _logger.LogInformation($"Intentando consultar una habitacion por ID: {id}");
-            var habitacion = await _habitacionService.GetByIdHabitacionAsync(id);
-            if (habitacion == null)
+            try 
             {
-                _logger.LogWarning($"La habitacion con el ID: {id} no fue encontrada");
+                _logger.LogInformation($"Intentando consultar una habitacion por ID: {id}");
+                var habitacion = await _habitacionService.GetByIdHabitacionAsync(id);
+                _logger.LogInformation($"Habitación encontrada con el ID {id} encontrada");
+                return Ok(habitacion);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "KeyNotFoundException: {Message}", ex.Message);
                 return NotFound();
             }
-            _logger.LogInformation($"Habitación encontrada con el ID {id} encontrada");
-            return Ok(habitacion);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Se produjo un error al obtener la habitación con el ID {id}");
+                return NotFound();
+            }
         }
 
 
@@ -66,7 +74,7 @@ namespace WebApi.Controllers.Habitaciones
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Se produjo un error al crear la habitación. {@HabitacionCreate}", habitacion);
-                return StatusCode(500, new { message = "Ocurrió un error al crear la habitación.", detail = ex.Message });
+                return StatusCode(500, new { message = "Ocurrió un error al crear la habitación."});
             }
         }
 
@@ -77,43 +85,68 @@ namespace WebApi.Controllers.Habitaciones
         [HttpGet("code/{code}")]
         public async Task<ActionResult> GetHabitacionByCodeAsync(int code)
         {
-            _logger.LogInformation($"Intentando buscar una habitación: {code}");
-            var habitacion = await _habitacionService.GetHabitacionByCodeAsync(code);
-            if (habitacion == null)
+            try
             {
-                return NotFound();
-                _logger.LogWarning($"No se encontró la habitación con el código {code}");
+                _logger.LogInformation($"Intentando buscar una habitación: {code}");
+                var habitacion = await _habitacionService.GetHabitacionByCodeAsync(code);
+                _logger.LogInformation($"Habitación encontrada con el código {code}");
+                return Ok(habitacion);
             }
-            _logger.LogInformation($"Habitación encontrada con el código {code}");
-            return Ok(habitacion);
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex,$"No se encontró la habitación con el código {code}");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Se produjo un error al obtener la habitación con el código {code}");
+                return StatusCode(500, new { message = "Ocurrió un error al buscar la habitación." });
+            }
         }
 
         [HttpGet("type/{idtype}")]
         public async Task<ActionResult> GetHabitacionByTypeAsync(int idtype)
         {
-            _logger.LogInformation($"Intentando consultar habitación por ID: {idtype}");
-            var habitacion = await _habitacionService.GetHabitacionByTypeAsync(idtype);
-            if (habitacion == null)
+            try 
             {
-                _logger.LogWarning($"La habitación con el ID: {idtype} no fue encontrada");
+                _logger.LogInformation($"Intentando consultar habitación por ID: {idtype}");
+                var habitacion = await _habitacionService.GetHabitacionByTypeAsync(idtype);
+                _logger.LogInformation($"Habitación encontrada con el ID {idtype} encontrada");
+                return new JsonResult(habitacion);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "KeyNotFoundException: {Message}", ex.Message);
                 return NotFound();
             }
-            _logger.LogInformation($"Habitación encontrada con el ID {idtype} encontrada");
-            return new JsonResult(habitacion);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Se produjo un error al obtener la habitación con el ID {idtype}");
+                return StatusCode(500, new { message = "Ocurrió un error al buscar la habitación." });
+            }
+            
         }
 
         [HttpGet("price/{price}")]
         public async Task<ActionResult> GetHabitacionByPriceAsync(int price)
         {
-            _logger.LogInformation($"Intentando buscar una habitación con precio: {price}");
-            var habitacion = await _habitacionService.GetHabitacionByPriceAsync(price);
-            if (habitacion == null)
+            try 
             {
-                _logger.LogWarning($"No se encontró la habitación con el precio {price}");
+                _logger.LogInformation($"Intentando buscar una habitación con precio: {price}");
+                var habitacion = await _habitacionService.GetHabitacionByPriceAsync(price);
+                _logger.LogInformation($"Habitación encontrada con el precio {price}");
+                return new JsonResult(habitacion);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "KeyNotFoundException: {Message}", ex.Message);
                 return NotFound();
             }
-            _logger.LogInformation($"Habitación encontrada con el precio {price}");
-            return new JsonResult(habitacion);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Se produjo un error al obtener la habitación con el precio {price}");
+                return StatusCode(500, new { message = "Ocurrió un error al buscar la habitación."});
+            }
         }
 
         [HttpGet("status/{status}/{cantidaPersonas}")]
@@ -142,7 +175,7 @@ namespace WebApi.Controllers.Habitaciones
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Se produjo un error al obtener las habitaciones con estado {status} y capacidad {cantidaPersonas}");
-                return StatusCode(500, new { message = "Ocurrió un error al buscar la habitación.", detail = ex.Message });
+                return StatusCode(500, new { message = "Ocurrió un error al buscar la habitación."});
             }
         }
 

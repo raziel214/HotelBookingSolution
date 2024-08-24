@@ -23,29 +23,40 @@ namespace WebApi.Controllers.Reservas
         [HttpGet]
         public async Task<ActionResult> GetAllReservasAsync()
         {
-            _logger.LogInformation("Intentando obtener todas las reservas");
-            var reservas = await _reservaService.GetAllReservasAsync();
-            if (reservas == null)
+            try
             {
-                _logger.LogWarning("No se encontraron reservas");
-                return NotFound();
+                _logger.LogInformation("Intentando obtener todas las reservas");
+                var reservas = await _reservaService.GetAllReservasAsync();
+                _logger.LogInformation("Reservas obtenidas exitosamente");
+                return new JsonResult(reservas);
             }
-            _logger.LogInformation("Reservas obtenidas exitosamente");
-            return new JsonResult(reservas);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener todas las reservas");
+                return BadRequest();
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetReservaById(int id)
         {
-            _logger.LogInformation($"Intentando obtener una reserva por ID: {id}");
-            var reserva = await _reservaService.GetReservaByIdAsync(id);
-            if (reserva == null)
+            try 
             {
-                _logger.LogWarning($"La reserva con el ID: {id} no fue encontrada");
+                _logger.LogInformation($"Intentando obtener una reserva por ID: {id}");
+                var reserva = await _reservaService.GetReservaByIdAsync(id);
+                _logger.LogInformation($"Reserva encontrada con el ID {id} encontrada");
+                return Ok(reserva);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, $"Reserva con el id {id} no fue encontrada");
                 return NotFound();
             }
-            _logger.LogInformation($"Reserva encontrada con el ID {id} encontrada");
-            return Ok(reserva);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener una reserva");
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -68,36 +79,46 @@ namespace WebApi.Controllers.Reservas
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateReservaAsync(int id, Reserva reserva)
         {
-            _logger.LogInformation($"Intentando actualizar la reserva con ID: {id}");
-            var reservaToUpdate = await _reservaService.GetReservaByIdAsync(id);
-            if (id != reserva.IdReserva)
+            try 
             {
-                _logger.LogWarning($"El ID de la URL {id} no coincide con el ID de la reserva {reserva.IdReserva}");
-                return BadRequest();
+                _logger.LogInformation($"Intentando actualizar la reserva con ID: {id}");
+                var reservaToUpdate = await _reservaService.GetReservaByIdAsync(id);
+                _logger.LogInformation($"Reserva encontrada con el ID {id} encontrada");
+                await _reservaService.UpdateReservaAsync(id, reserva);
+                return NoContent();
             }
-            if(reservaToUpdate==null)
+            catch(KeyNotFoundException ex)
             {
-                _logger.LogWarning($"La reserva con el ID {id} no fue encontrada");
+                _logger.LogWarning(ex, $"Reserva con el id {id} no fue encontrada");
                 return NotFound();
             }
-            _logger.LogInformation($"Reserva encontrada con el ID {id} encontrada");
-            await _reservaService.UpdateReservaAsync(id, reserva);
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar una reserva");
+                return BadRequest();
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReservaByIdAsync(int id)
         {
-            _logger.LogInformation($"Intentando eliminar la reserva con ID: {id}");
-            var reserva = await _reservaService.GetReservaByIdAsync(id);
-            if (reserva==null)
+            try
             {
-                _logger.LogWarning($"La reserva con el ID {id} no fue encontrada");
-                return NotFound();               
+                _logger.LogInformation($"Intentando eliminar la reserva con ID: {id}");
+                await _reservaService.DeleteReservaByIdAsync(id);
+                _logger.LogInformation($"Reserva encontrada con el ID {id} encontrada");
+                return NoContent();
             }
-            _logger.LogInformation($"Reserva encontrada con el ID {id} encontrada");
-            await _reservaService.DeleteReservaByIdAsync(id);
-            return NoContent();
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, $"Reserva con el id {id} no fue encontrada");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar una reserva");
+                return BadRequest();
+            }
         }
     }
 }

@@ -42,23 +42,38 @@ namespace Infrastructure.RepositoryImpl
             else
             {
                 // Si el usuario no existe, lanzar una excepción
-                throw new Exception("El usuario no existe");
+                throw new KeyNotFoundException("El usuario no existe");
             }
         }
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return await _context.Usuarios.ToListAsync();
+           var users = await _context.Usuarios.Include(u => u.Rol).ToListAsync();
+            if (users == null)
+            {
+                throw new KeyNotFoundException("No hay usuarios registrados");
+            }
+            return users;
         }
 
         public async  Task<User> GetUserByEmailAsync(string email)
         {
-            return await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Email == email);
+           var user =await _context.Usuarios.Include(u => u.Rol).FirstOrDefaultAsync(u => u.Email == email);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("El usuario no existe");
+            }
+            return user;
         }
 
         public async  Task<User> GetUserByIdAsync(int id)
         {
-            return await _context.Usuarios.FindAsync(id);
+            var user = await _context.Usuarios.FindAsync(id);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("El usuario no existe");
+            }
+            return user;
         }
 
         public async Task<User> GetUserByUserNameAndEmailAndPasswordAsync( string email, string password)
@@ -76,8 +91,13 @@ namespace Infrastructure.RepositoryImpl
 
         public async  Task UpdateUserAsync(User user)
         {
+           var entity = await _context.Usuarios.FindAsync(user.Id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("El usuario no existe");
+            }
             _context.Usuarios.Update(user);
-             await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  
         }
     }
 }

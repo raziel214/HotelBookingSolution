@@ -35,7 +35,7 @@ namespace Infrastructure.RepositoryImpl
                 await _context.SaveChangesAsync();
                 return reserva;
             } else {
-                throw new Exception("La reserva no existe");
+                throw new KeyNotFoundException("La reserva no existe");
             }
         }
 
@@ -46,7 +46,12 @@ namespace Infrastructure.RepositoryImpl
 
         public async  Task<Reserva> GetReservaByIdAsync(int id)
         {
-            return await _context.Reservas.FindAsync(id);
+            var reserva = await _context.Reservas.FindAsync(id);
+            if (reserva == null)
+            {
+                throw new KeyNotFoundException("La reserva no existe");
+            }
+            return reserva;
         }
 
         public async Task<int> SaveChangesAsync()
@@ -56,6 +61,11 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task UpdateReservaAsync(Reserva reserva)
         {
+            var entity = await _context.Reservas.FindAsync(reserva.IdReserva);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("La reserva no existe");
+            }
             _context.Reservas.Update(reserva);
             await _context.SaveChangesAsync();
         }

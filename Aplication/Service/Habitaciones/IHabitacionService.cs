@@ -15,7 +15,7 @@ namespace Aplication.Service.Habitaciones
         Task<Habitacion> GetHabitacionByCodeAsync(int code);
         Task<IEnumerable<Habitacion>> GetHabitacionByTypeAsync(int type);
         Task<IEnumerable<Habitacion>> GetHabitacionByPriceAsync(int price);
-        Task<IEnumerable<Habitacion>> GetHabitacionByStatusAsync(int status);
+        Task<IEnumerable<Habitacion>> GetHabitacionByStatusAndCapacityAsync(int status,int cantidadPersonas);
         Task<IEnumerable<Habitacion>> GetHabitacionByHotelAsync(int hotelId);
         Task<HabitacionRead> CreateHabitacionAsync(HabitacionCreate habitacion);
         Task  UpdateHabitacionAsync(int id, Habitacion habitacion);

@@ -111,15 +111,15 @@ namespace Tests
             var status = 1;
             var habitaciones = new List<Habitacion>
             {
-                new Habitacion { IdHabitacion = 1, NumeroHabitacion = 101, Estado = status },
-                new Habitacion { IdHabitacion = 2, NumeroHabitacion = 102, Estado = status }
+                new Habitacion { IdHabitacion = 1, NumeroHabitacion = 101, Estado = status, CantidadPersonas=2},
+                new Habitacion { IdHabitacion = 2, NumeroHabitacion = 102, Estado = status ,CantidadPersonas=2}
             };
 
-            _habitacionRepositoryMock.Setup(repo => repo.GetHabitacionByStatusAsync(status))
+            _habitacionRepositoryMock.Setup(repo => repo.GetHabitacionByStatusAndCapacityAsync(status, habitaciones.Capacity))
                 .ReturnsAsync(habitaciones);
 
             // Act
-            var result = await _habitacionService.GetHabitacionByStatusAsync(status);
+            var result = await _habitacionService.GetHabitacionByStatusAndCapacityAsync(status, habitaciones.Capacity);
 
             // Assert
             Assert.NotNull(result);

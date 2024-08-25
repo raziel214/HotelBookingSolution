@@ -48,12 +48,7 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-           var users = await _context.Usuarios.Include(u => u.Rol).ToListAsync();
-            if (users == null)
-            {
-                throw new KeyNotFoundException("No hay usuarios registrados");
-            }
-            return users;
+            return await _context.Usuarios.ToListAsync();
         }
 
         public async  Task<User> GetUserByEmailAsync(string email)
@@ -78,7 +73,12 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<User> GetUserByUserNameAndEmailAndPasswordAsync( string email, string password)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u =>  u.Email == email && u.Password == password);
+            var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email && u.Password == password);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("El usuario no existe");
+            }
+            return user;
         }
 
 

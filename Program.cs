@@ -79,12 +79,6 @@ builder.Services.AddScoped<IHotelesPreferidosService, HotelesPreferidosService>(
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
-
-
-
-
-
 // Agregar Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -10,6 +10,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia los archivos .csproj de los diferentes proyectos
+
 COPY ["WebApi/WebApi.csproj", "WebApi/"]
 COPY ["Aplication/Aplication.csproj", "Aplication/"]
 COPY ["Domain/Domain.csproj", "Domain/"]

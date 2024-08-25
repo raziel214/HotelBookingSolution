@@ -1,23 +1,20 @@
 version: '3.4'
 
 services:
-  sqlserver:
-    image: mcr.microsoft.com/windows/servercore:ltsc2019
-    environment:
-      SA_PASSWORD: "YourStrong@Passw0rd"
-      ACCEPT_EULA: "Y"
-    ports:
-      - "1433:1433"
-    isolation: process
-
   webapi:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
-    depends_on:
-      - sqlserver
+      - "5023:5023"
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=HotelReservationsDB;User Id=Empleados;Password=Taylor/1214;TrustServerCertificate=true;
-    isolation: process
+      - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - NUGET_PACKAGES=c:\\.nuget\\fallbackpackages2
+      - NUGET_FALLBACK_PACKAGES=c:\\.nuget\\fallbackpackages;c:\\.nuget\\fallbackpackages2
+    volumes:
+      - "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution:C:\\app:rw"
+      - "C:\\Users\\Ibeth Pacheco\\source\\repos\\HotelBookingSolutionProject\\HotelBookingSolution:c:\\src:rw"
+      - "C:\\Users\\Ibeth Pacheco\\.nuget\\packages\\:c:\\.nuget\\fallbackpackages2:rw"
+      - "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages:c:\\.nuget\\fallbackpackages:rw"

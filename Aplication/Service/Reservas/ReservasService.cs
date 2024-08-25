@@ -23,10 +23,17 @@ namespace Aplication.Service.Reservas
 
         public async Task<ReservasRead> CreateReservaAsync(ReservasCreate reserva)
         {
-            Reserva entity = _mapper.Map<Reserva>(reserva);
-            entity = await _reservasRepository.CreateReservaAsync(entity);
-            ReservasRead dto = _mapper.Map<ReservasRead>(entity);
-            return dto;
+            try 
+            {
+                Reserva entity = _mapper.Map<Reserva>(reserva);
+                entity = await _reservasRepository.CreateReservaAsync(entity);
+                ReservasRead dto = _mapper.Map<ReservasRead>(entity);
+                return dto;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al crear la reserva");
+            }
         }
 
         public async Task<Reserva> DeleteReservaByIdAsync(int id)
@@ -43,16 +50,31 @@ namespace Aplication.Service.Reservas
 
         public async Task<IEnumerable<Reserva>> GetAllReservasAsync()
         {
-            return await _reservasRepository.GetAllReservasAsync();
+           var reservas =  await _reservasRepository.GetAllReservasAsync();
+            if(reservas.Count() == 0)
+            {
+                throw new KeyNotFoundException("No se encontraron reservas");
+            }
+            return reservas;
         }
 
         public async Task<Reserva> GetReservaByIdAsync(int id)
         {
-            return await _reservasRepository.GetReservaByIdAsync(id);
+            var reserva = await _reservasRepository.GetReservaByIdAsync(id);
+            if (reserva == null)
+            {
+                throw new KeyNotFoundException($"La reserva con ID {id} no fue encontrada.");
+            }
+            return reserva;
         }
 
         public async Task UpdateReservaAsync(int id,Reserva reserva)
         {
+            var reservaExistente = await _reservasRepository.GetReservaByIdAsync(id);
+            if(reservaExistente == null)
+            {
+                throw new KeyNotFoundException($"La reserva con ID {id} no fue encontrada.");
+            }
             await _reservasRepository.UpdateReservaAsync(reserva);
         }
     }

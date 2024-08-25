@@ -14,7 +14,7 @@ namespace Domain.Repository
         Task<HotelPreferido> GetHotelPreferidoByIdAsync(int idHotelPreferido);
         Task<HotelPreferido> GetHotelPreferidoByUserIdHotelIdAsync(int userId, int hotelId);
         Task<HotelPreferido> CreateHotelPreferidoAsync(HotelPreferido hotelPreferido);
-        Task UpdateHotelPreferidoAsync(int userId, int hotelId);
+        Task UpdateHotelPreferidoAsync(int idPreferido, HotelPreferido hotelPreferido);
         Task<HotelPreferido> DeleteHotelPreferidoByIdAsync(int idHotelPreferido);
         Task<IEnumerable<HotelPreferido>> GetAllHotelesPreferidosAsync();
         Task<int> SaveChangesAsync();

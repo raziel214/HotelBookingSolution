@@ -36,7 +36,7 @@ namespace Infrastructure.RepositoryImpl
             }
             else
             {
-                throw new Exception("La habitación no existe");
+                throw new KeyNotFoundException("La habitación no existe");
             }
         }
         public async Task<IEnumerable<TiposHabitacion>> GetAllHabitacionTipoAsync()
@@ -46,12 +46,22 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<TiposHabitacion> GetHabitacionTipoByIdAsync(int id)
         {
-            return await _context.TiposHabitaciones.FindAsync(id);
+            var habitacion = await _context.TiposHabitaciones.FindAsync(id);
+            if (habitacion == null)
+            {
+                throw new KeyNotFoundException("La habitación no existe");
+            }
+            return habitacion;
         }
 
         public async Task<TiposHabitacion> GetHabitacionTipoByNombreAsync(string nombre)
         {
-            return await _context.TiposHabitaciones.FirstOrDefaultAsync(h => h.Nombre == nombre);
+            var habitacion = await _context.TiposHabitaciones.FirstOrDefaultAsync(h => h.Nombre == nombre);
+            if (habitacion == null)
+            {
+                throw new KeyNotFoundException("La habitación no existe");
+            }
+            return habitacion;
         }
 
         public async Task<int> SaveChangesAsync()
@@ -61,6 +71,11 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task UpdateHabitacionTipoAsync(TiposHabitacion habitacion)
         {
+            var entity = await _context.TiposHabitaciones.FindAsync(habitacion.IdTipoHabitacion);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("La habitación no existe");
+            }
             _context.TiposHabitaciones.Update(habitacion);
             await _context.SaveChangesAsync();
         }

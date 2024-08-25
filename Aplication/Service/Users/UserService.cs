@@ -37,11 +37,7 @@ namespace Application.Service.Users
         public async Task<User> DeleteUserAsync(int id)
         {
             // Verificar si el usuario existe antes de intentar eliminarlo
-            var users = await _userRepository.GetUserByIdAsync(id);
-            if (users == null)
-            {
-                throw new KeyNotFoundException($"El usuario con ID {id} no fue encontrado.");
-            }
+            var users = await _userRepository.GetUserByIdAsync(id);            
             // Eliminar el usuario directamente por ID
             await _userRepository.DeleteUserByIdAsync(id);
             await _userRepository.SaveChangesAsync();
@@ -67,19 +63,7 @@ namespace Application.Service.Users
         public async Task<string> LoginUserAsync(UserLogin userLogin)
         {
             // Obtener el usuario desde el repositorio basado en el email/username
-            var user = await _userRepository.GetUserByEmailAsync(userLogin.UserEmail);
-
-            // Si el usuario no existe, retornar null o lanzar una excepción
-            if (user == null)
-            {
-                throw new UnauthorizedAccessException("Invalid username or password.");
-            }
-
-            // Verificar la contraseña usando BCrypt
-            if (!_securityService.VerifyPassword(user.Password, userLogin.Password))
-            {
-                throw new UnauthorizedAccessException("Invalid username or password");
-            }
+            var user = await _userRepository.GetUserByEmailAsync(userLogin.UserEmail);          
 
             // Generar el token JWT
             var token = _securityService.GenerateJwtToken(user);

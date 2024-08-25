@@ -24,29 +24,39 @@ namespace WebApi.Controllers.Roles
         [HttpGet]
         public async Task<ActionResult> GetAllRoles()
         {
-            _logger.LogInformation("Intentando obtener todos los roles");
-            var roles = await _roleService.GetAllRolesAsync();
-            if (roles == null)
-            {
-                _logger.LogWarning("No se encontraron roles");
-                return NotFound();
+            try {
+                _logger.LogInformation("Intentando obtener todos los roles");
+                var roles = await _roleService.GetAllRolesAsync();
+                _logger.LogInformation("Roles obtenidos exitosamente");
+                return new JsonResult(roles);
             }
-            _logger.LogInformation("Roles obtenidos exitosamente");
-            return new JsonResult(roles);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener todos los roles");
+                return BadRequest();
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetRolById(int id)
         {
-            _logger.LogInformation($"Intentando obtener un rol por ID: {id}");
-            var roles = await _roleService.GetRoleByIdAsync(id);
-            if (roles == null)
+            try 
             {
-                _logger.LogWarning($"El rol con el ID: {id} no fue encontrado");
+                _logger.LogInformation($"Intentando obtener un rol por ID: {id}");
+                var roles = await _roleService.GetRoleByIdAsync(id);
+                _logger.LogInformation($"Rol encontrado con el ID {id} encontrado");
+                return Ok(roles);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, $"Rol con el id{id} no encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Rol encontrado con el ID {id} encontrado");
-            return Ok(roles);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener un rol");
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -69,37 +79,45 @@ namespace WebApi.Controllers.Roles
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRol(int id, Role rol)
         {
-            _logger.LogInformation($"Intentando actualizar el rol con ID: {id}");
-            var rolToUpdate = await _roleService.GetRoleByIdAsync(id);
-            if (id != rol.Id)
+            try
             {
-                _logger.LogWarning($"El ID de rol: {id} no coincide con el ID de rol: {rol.Id}");
-                return BadRequest();
+                _logger.LogInformation($"Intentando actualizar el rol con ID: {id}");
+                var rolToUpdate = await _roleService.GetRoleByIdAsync(id);
+                await _roleService.UpdateRoleAsync(id, rol);
+                _logger.LogInformation($"Rol encontrado con el ID {id} encontrado");
+                return NoContent();
             }
-            if(rolToUpdate == null)
+            catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning($"El rol con el ID {id} no fue encontrado");
+                _logger.LogWarning(ex, $"Rol con el id {id} no fue encontrado");
                 return NotFound();
             }
-            await _roleService.UpdateRoleAsync(id,rol);
-            _logger.LogInformation($"Rol encontrado con el ID {id} encontrado");
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar un rol");
+                return BadRequest();
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRol(int id)
         {
-            _logger.LogInformation($"Intentando eliminar el rol con ID: {id}");
-            var rol = await _roleService.GetRoleByIdAsync(id);
-            if (rol == null)
+            try {
+                _logger.LogInformation($"Intentando eliminar el rol con ID: {id}");
+                await _roleService.DeleteRoleByIdAsync(id);
+                _logger.LogInformation($"Rol eliminado con el ID: {id}");
+                return NoContent();
+            }
+            catch(KeyNotFoundException ex)
             {
-                _logger.LogWarning($"El rol con el ID: {id} no fue encontrado");
+                _logger.LogWarning(ex, $"Rol con el id {id} no fue encontrado");
                 return NotFound();
             }
-
-            await _roleService.DeleteRoleByIdAsync(id);
-            _logger.LogInformation($"Rol eliminado con el ID: {id}");
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar un rol");
+                return BadRequest();
+            }
         }
 
     }

@@ -45,9 +45,13 @@ namespace Infrastructure.RepositoryImpl
                 await _context.SaveChangesAsync();
                 return habitacion;
             }
-            else
+            else if (habitacion == null)
             {
-                throw new Exception("La habitacion no existe");
+                throw new KeyNotFoundException("La habitacion no existe");
+            }
+            else 
+            {
+                throw new Exception("Error al eliminar la habitacion");
             }
         }
 
@@ -58,7 +62,20 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<Habitacion> GetByIdHabitacionAsync(int id)
         {
-            return await _context.Habitaciones.FindAsync(id);
+            var habitacion = await _context.Habitaciones.FindAsync(id);
+            if (habitacion != null)
+            {
+                return await _context.Habitaciones.FindAsync(id);
+            }
+            else if (habitacion == null)
+            {
+                throw new KeyNotFoundException("La habitacion no existe");
+            }
+            else
+            {
+                throw new Exception("Error al obtener la habitacion");
+            }
+            
         }
 
         public async Task<Habitacion> GetHabitacionByCodeAsync(int code)
@@ -68,9 +85,13 @@ namespace Infrastructure.RepositoryImpl
             {
                 return await _context.Habitaciones.FindAsync(habitacion.IdHabitacion);
             }
+            else if(habitacion==null)
+            {
+                throw new KeyNotFoundException("La habitacion no existe");
+            }
             else
             {
-                throw new Exception("La habitacion no existe");
+                throw new Exception("Error al obtener la habitacion");
             }
 
         }
@@ -78,16 +99,42 @@ namespace Infrastructure.RepositoryImpl
 
         public async  Task<IEnumerable<Habitacion>> GetHabitacionByHotelAsync(int hotelId)
         {
-            return await _context.Habitaciones
+            var habitacion = await _context.Hoteles.FindAsync(hotelId);
+            if (habitacion != null)
+            {
+                return await _context.Habitaciones
                 .Where(h => h.IdHotel == hotelId)
                 .ToListAsync();
+            }
+            else if (habitacion == null)
+            {
+                throw new KeyNotFoundException("El hotel no existe");
+            }
+            else
+            {
+                throw new Exception("Erro al obtener las habitaciones por hotel");
+            }
         }
 
         public async Task<IEnumerable<Habitacion>> GetHabitacionByPriceAsync(int CostoBase)
         {
-            return await _context.Habitaciones
-                     .Where(h => h.CostoBase == CostoBase)
-                     .ToListAsync();
+            var habitacion = await _context.Habitaciones
+                .Where(h => h.CostoBase == CostoBase)
+                .ToListAsync();
+            if (habitacion != null)
+            {
+                return habitacion;
+            }
+            else if (habitacion == null)
+            {
+                throw new KeyNotFoundException("No hay habitaciones disponibles con ese precio");
+
+            }
+            else
+            {
+                throw new Exception("Error al obtener las habitaciones por precio");
+            
+            }
         }
         
         public async Task<IEnumerable<Habitacion>> GetHabitacionByStatusAndCapacityAsync(int Estado, int cantidadPersonas)
@@ -98,16 +145,32 @@ namespace Infrastructure.RepositoryImpl
                .Where(h => h.Estado == Estado&& h.CantidadPersonas>=cantidadPersonas)
                .ToListAsync();
             }
-            else {
-                throw new Exception("No hay habitaciones disponibles con esa capacidad");
+            else if(cantidadPersonas>3) {
+                throw new KeyNotFoundException("No hay habitaciones disponibles con esa capacidad");
+            }
+            else 
+            {
+                throw new Exception("Error al obtener las habitaciones por estado y capacidad");
             }
         }
 
         public async Task<IEnumerable<Habitacion>> GetHabitacionByTypeAsync(int type)
         {
-            return await _context.Habitaciones
+            var habitacion = await _context.TiposHabitaciones.FindAsync(type);
+            if (habitacion != null)
+            {
+                return await _context.Habitaciones
                 .Where(h => h.IdTipoHabitacion == type)
                 .ToListAsync();
+            }
+            else if (habitacion == null)
+            {
+                throw new KeyNotFoundException("No hay habitaciones disponibles con ese tipo de habitacion");
+            }
+            else
+            {
+                throw new Exception("Error al obtener habitaciones con ese tipo");
+            }
         }
 
         public async  Task<int> SaveChangesAsync()
@@ -117,8 +180,21 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task UpdateHabitacionAsync(int id, Habitacion habitacion)
         {
-          _context.Habitaciones.Update(habitacion);
-            await _context.SaveChangesAsync();          
+            var habitaciontipo = await _context.TiposHabitaciones.FindAsync(habitacion.IdTipoHabitacion);
+            if (habitacion != null)
+            {
+                _context.Habitaciones.Update(habitacion);
+                await _context.SaveChangesAsync();
+            }
+            else if (habitacion == null)
+            {
+                throw new Exception("La habitacion  con ese id no existe");
+            }
+            else
+            {
+                throw new Exception("Error al actualizar la habitacion");
+            }
+                  
         }
 
         

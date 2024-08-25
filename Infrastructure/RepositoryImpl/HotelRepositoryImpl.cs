@@ -40,7 +40,7 @@ namespace Infrastructure.RepositoryImpl
             else
             {
                 // Si el hotel no existe, lanzar una excepción
-                throw new Exception("El hotel no existe");
+                throw new KeyNotFoundException("El hotel no existe");
             }
         }
 
@@ -51,17 +51,32 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task<Hotel> GetHotelByCodeAsync(string code)
         {
-            return await _context.Hoteles.FirstOrDefaultAsync(h => h.Codigo == code);
+            var hotelCode= await _context.Hoteles.FirstOrDefaultAsync(h => h.Codigo == code);
+            if (hotelCode == null)
+            {
+                throw new KeyNotFoundException("El hotel no existe");
+            }
+            return hotelCode;
         }
 
         public async  Task<Hotel> GetHotelByIdAsync(int id)
         {
-            return await _context.Hoteles.FindAsync(id);
+            var hotel = await _context.Hoteles.FindAsync(id);
+            if (hotel == null)
+            {
+                throw new KeyNotFoundException("El hotel no existe");
+            }
+            return hotel;
         }
 
         public async Task<Hotel> GetHotelByNameAsync(string name)
         {
-            return await _context.Hoteles.FirstOrDefaultAsync(h => h.Nombre == name);
+            var hotelName = await _context.Hoteles.FirstOrDefaultAsync(h => h.Nombre == name);
+            if(hotelName == null)
+            {
+                throw new KeyNotFoundException("El hotel no existe");
+            }
+            return hotelName;
         }
 
         public async Task<int> SaveChangesAsync()
@@ -71,6 +86,11 @@ namespace Infrastructure.RepositoryImpl
 
         public async Task UpdateHotelAsync(int id, Hotel hotel)
         {
+            var hotelExistente = await _context.Hoteles.FindAsync(id);
+            if (hotelExistente == null)
+            {
+                throw new KeyNotFoundException("El hotel no existe");
+            }
             _context.Hoteles.Update(hotel);
             await _context.SaveChangesAsync();
         }

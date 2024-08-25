@@ -24,57 +24,84 @@ namespace WebApi.Controllers.HotelesPreferidos
         [HttpGet]
         public async Task<IActionResult> GetAllHotelesPreferidosAsync() 
         {
-            _logger.LogInformation("Intentando obtener todos los hoteles preferidos");
-            var hotelesPreferidos = await _hotelesPreferidosService.GetAllHotelesPreferidosAsync();
-            if (hotelesPreferidos == null) 
+            try
             {
-                _logger.LogWarning("No se encontraron hoteles preferidos");
-                return NotFound();
+                _logger.LogInformation("Intentando obtener todos los hoteles preferidos");
+                var hotelesPreferidos = await _hotelesPreferidosService.GetAllHotelesPreferidosAsync();
+                _logger.LogInformation("Hoteles preferidos obtenidos exitosamente");
+                return new JsonResult(hotelesPreferidos);
             }
-            _logger.LogInformation("Hoteles preferidos obtenidos exitosamente");
-            return new JsonResult(hotelesPreferidos);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener todos los hoteles preferidos");
+                return BadRequest();
+            }
         }
 
         [HttpGet("{id}")]
          public async Task<IActionResult> GetHotelPreferidoById(int id) 
         {
-            _logger.LogInformation($"Intentando obtener un hotel preferido por ID: {id}");
-            var hotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByIdAsync(id);
-            if (hotelPreferido == null) 
+            try 
             {
-                _logger.LogWarning($"El hotel preferido con el ID: {id} no fue encontrado");
+                _logger.LogInformation($"Intentando obtener un hotel preferido por ID: {id}");
+                var hotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByIdAsync(id);
+                _logger.LogInformation($"Hotel preferido encontrado con el ID {id} encontrado");
+                return Ok(hotelPreferido);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Hotel preferido no encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Hotel preferido encontrado con el ID {id} encontrado");
-            return Ok(hotelPreferido);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener un hotel preferido");
+                return BadRequest();
+            }
         }
 
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetHotelPreferidoByUserIdAsync(int userId) 
         {
-            _logger.LogInformation($"Intentando obtener un hotel preferido por ID de usuario: {userId}");
-            var hotelPreferido = await _hotelesPreferidosService.GetHotelesPreferidosByUserIdAsync(userId);
-            if (hotelPreferido == null) 
+            try 
             {
-                _logger.LogWarning($"El hotel preferido con el ID de usuario: {userId} no fue encontrado");
+                _logger.LogInformation($"Intentando obtener un hotel preferido por ID de usuario: {userId}");
+                var hotelPreferido = await _hotelesPreferidosService.GetHotelesPreferidosByUserIdAsync(userId);
+                _logger.LogInformation($"Hotel preferido encontrado con el ID de usuario {userId} encontrado");
+                return Ok(hotelPreferido);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Hotel preferido no encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Hotel preferido encontrado con el ID de usuario {userId} encontrado");
-            return Ok(hotelPreferido);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener un hotel preferido");
+                return BadRequest();
+            }
         }
 
         [HttpGet("user/{userId}/hotel/{hotelId}")]
         public async Task<IActionResult> GetHotelPreferidoByUserIdAndHotelIdAsync(int userId, int hotelId) 
         {
-            _logger.LogInformation($"Intentando obtener un hotel preferido por ID de usuario: {userId} y ID de hotel: {hotelId}");
-            var hotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByUserIdHotelIdAsync(userId, hotelId);
-            if (hotelPreferido == null) 
+            try 
             {
-                _logger.LogWarning($"El hotel preferido con el ID de usuario: {userId} y ID de hotel: {hotelId} no fue encontrado");
+                _logger.LogInformation($"Intentando obtener un hotel preferido por ID de usuario: {userId} y ID de hotel: {hotelId}");
+                var hotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByUserIdHotelIdAsync(userId, hotelId);
+                _logger.LogInformation($"Hotel preferido encontrado con el ID de usuario {userId} y ID de hotel {hotelId} encontrado");
+                return Ok(hotelPreferido);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Hotel preferido no encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Hotel preferido encontrado con el ID de usuario {userId} y ID de hotel {hotelId} encontrado");
-            return Ok(hotelPreferido);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener un hotel preferido");
+                return BadRequest();
+            }
         }
 
         [HttpPost]
@@ -98,36 +125,47 @@ namespace WebApi.Controllers.HotelesPreferidos
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateHotelPreferidoAsync(int id, HotelPreferido hotelPreferido) 
         {
-            _logger.LogInformation($"Intentando actualizar el hotel preferido con ID: {id}");
-            var existingHotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByIdAsync(id);
-            if (id != hotelPreferido.IdPreferido) 
+            try 
             {
-                _logger.LogWarning($"El ID de la URL {id} no coincide con el ID del hotel preferido {hotelPreferido.IdPreferido}");
+                _logger.LogInformation($"Intentando actualizar el hotel preferido con ID: {id}");
+                var existingHotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByIdAsync(id);
+                await _hotelesPreferidosService.UpdateHotelPreferidoAsync(id, hotelPreferido);
+                _logger.LogInformation($"Actualizando hotel preferido con ID {id}");
+                return NoContent();
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Hotel preferido no encontrado");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar un hotel preferido");
                 return BadRequest();
             }
-            if (existingHotelPreferido == null) 
-            {
-                _logger.LogWarning($"El hotel preferido con el ID {id} no fue encontrado");
-                return NotFound();
-            }            
-            await _hotelesPreferidosService.UpdateHotelPreferidoAsync(id, hotelPreferido);
-            _logger.LogInformation($"Actualizando hotel preferido con ID {id}");
-            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHotelPreferidoByIdAsync(int id) 
         {
-            _logger.LogInformation($"Intentando eliminar el hotel preferido con ID: {id}");
-            var existingHotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByIdAsync(id);
-            if (existingHotelPreferido == null) 
+            try
             {
-                _logger.LogWarning($"El hotel preferido con el ID {id} no fue encontrado");
+                _logger.LogInformation($"Intentando eliminar el hotel preferido con ID: {id}");
+                var existingHotelPreferido = await _hotelesPreferidosService.GetHotelPreferidoByIdAsync(id);
+                _logger.LogInformation($"Eliminando hotel preferido con ID {id}");
+                await _hotelesPreferidosService.DeleteHotelPreferidoByIdAsync(id);
+                return NoContent();
+            }
+            catch(KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "Hotel preferido no encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Eliminando hotel preferido con ID {id}");
-            await _hotelesPreferidosService.DeleteHotelPreferidoByIdAsync(id);
-            return NoContent();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar un hotel preferido");
+                return BadRequest();
+            }
         }
     }
 }

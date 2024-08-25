@@ -21,15 +21,16 @@ namespace WebApi.Controllers.Users
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] UserLogin userDto)
         {
-            _logger.LogInformation("Intentando loguear un usuario");
-            var authResponse = await _userService.LoginUserAsync(userDto);
-            if (authResponse == null)
-            {
-                _logger.LogWarning("No se pudo loguear el usuario");
-                return Unauthorized();
+            try {
+                _logger.LogInformation("Intentando loguear un usuario");
+                var authResponse = await _userService.LoginUserAsync(userDto);
+                _logger.LogInformation("Usuario logueado exitosamente");
+                return Ok(authResponse);
             }
-            _logger.LogInformation("Usuario logueado exitosamente");
-            return Ok(authResponse);
+            catch(Exception e) {
+                _logger.LogError(e,$"Error de usuario y contraseña");
+                return BadRequest();
+            }
         }
     }
 }

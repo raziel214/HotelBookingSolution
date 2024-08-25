@@ -25,30 +25,41 @@ namespace WebApi.Controllers.Users
         [HttpGet]
         public async Task<ActionResult> GetAllUsers()
         {
-            _logger.LogInformation("Intentando obtener todos los usuarios");
-            var users = await _userService.GetAllUsersAsync();
-            if (users == null)
+            try
             {
-                _logger.LogWarning("No se encontraron usuarios");
-                return NotFound();
+
+                _logger.LogInformation("Intentando obtener todos los usuarios");
+                var users = await _userService.GetAllUsersAsync();
+                _logger.LogInformation("Usuarios obtenidos exitosamente");
+                return new JsonResult(users);
             }
-            _logger.LogInformation("Usuarios obtenidos exitosamente");
-            return new JsonResult(users);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener todos los usuarios");
+                return BadRequest();
+            }
         }
 
         
         [HttpGet("{id}")]
         public async Task<ActionResult> GetRolById(int id)
         {
-            _logger.LogInformation($"Intentando obtener un usuario por ID: {id}");
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
+            try
             {
-                _logger.LogWarning($"El usuario con el ID: {id} no fue encontrado");
+                _logger.LogInformation($"Intentando obtener un usuario por ID: {id}");
+                var user = await _userService.GetUserByIdAsync(id);
+                _logger.LogInformation($"Usuario encontrado con el ID {id} encontrado");
+                return Ok(user);
+            }
+            catch (KeyNotFoundException ex) {
+                _logger.LogWarning(ex, $"Usuario con el id {id} no fue encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Usuario encontrado con el ID {id} encontrado");
-            return Ok(user);
+            catch (Exception ex) {
+                _logger.LogError(ex, "Error al obtener una reserva");
+                return BadRequest();
+            }
+            
         }
 
        
@@ -75,37 +86,47 @@ namespace WebApi.Controllers.Users
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, User user)
         {
-            _logger.LogInformation($"Intentando actualizar el usuario con ID: {id}");
-            var userToUpdate = await _userService.GetUserByIdAsync(id);
-            if (id != user.Id)
+            try
             {
-                _logger.LogWarning($"El ID de usuario: {id} no coincide con el ID de usuario: {user.Id}");
-                return BadRequest();
+                _logger.LogInformation($"Intentando actualizar el usuario con ID: {id}");
+                var userToUpdate = await _userService.GetUserByIdAsync(id);
+                _logger.LogInformation($"Usuario encontrado con el ID {id} encontrado");
+                await _userService.UpdateUserAsync(id, user);
+                return NoContent();
             }
-            if(userToUpdate==null)
+            catch (KeyNotFoundException ex)
             {
-                _logger.LogWarning($"El usuario con el ID {id} no fue encontrado");
+                _logger.LogWarning(ex, $"Usuario  con el ID {id} no fue encontrado");
                 return NotFound();
             }
-            _logger.LogInformation($"Usuario encontrado con el ID {id} encontrado");
-           await _userService.UpdateUserAsync(id, user);
-            return NoContent();
+            catch (Exception ex) {
+                _logger.LogError(ex,$"Error al actualizar el usuario");
+                return BadRequest();
+            }
         }
 
         
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            _logger.LogInformation($"Intentando eliminar el usuario con ID: {id}");
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user==null)
+            try
             {
-                _logger.LogWarning($"El usuario con el ID: {id} no fue encontrado");
-                return NotFound();                
+                _logger.LogInformation($"Intentando eliminar el usuario con ID: {id}");
+                var user = await _userService.GetUserByIdAsync(id);
+                _logger.LogInformation($"Usuario encontrado con el ID {id} encontrado");
+                await _userService.DeleteUserAsync(id);
+                return NoContent();
             }
-            _logger.LogInformation($"Usuario encontrado con el ID {id} encontrado");
-            await _userService.DeleteUserAsync(id);
-            return NoContent();
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, $"No se encontró el usuario con el id {id}");
+                return NotFound();
+            }
+            catch (Exception e) 
+            {
+                _logger.LogError(e, $"Error al eliminar el registro con el id {id}");
+                return BadRequest();
+            }
 
         }
     }

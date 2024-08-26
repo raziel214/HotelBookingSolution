@@ -130,11 +130,14 @@ Se recomienda agregar un prefijo a las etiquetas, por ejemplo, la letra «v» si
 8. en la configuracion de docker se utilizó la configuración sugerida por visual studio  con la siguiente imagen
    ```bash
    mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809;
-para realizar la prueba de docker en local se debe compilar desde visual studio el docker este descarga las dependencias y agrega la imagen al repositorio local de contenedores  luego desde el docker dekstop le das run o con el comando docker run -p 5000:8080 nombre de la imgen
- para probar desde el docker compose se debe navegar hasta la raiz del proyecto donde esta el docker compose y elecutar el si guiente comando. 
--  docker-compose up 
+para realizar la prueba de docker en local se debe compilar desde visual studio el docker este descarga las dependencias y agrega la imagen al repositorio local de contenedores  luego desde 
+desde la raiz del proyecto ejecutas los siguientes comandos.
+-  choco install make
+
+- make all
 10.   debe salir algo similar a esto
-![Compilacion del Docker compose](img/Dockerimage.png)
+![Ejecucción Make all](img/makeall.png)
+![Ejecucción Make all](img/makeall2.png)
 se crean las imagenes necesarias para el funcionamiento de la aplicación
 ## GithubActions
 
@@ -146,3 +149,4 @@ se crean las imagenes necesarias para el funcionamiento de la aplicación
 
 DOCKER_USERNAME: Tu nombre de usuario de DockerHub.
 DOCKER_PASSWORD: Tu contraseña de DockerHub.
+

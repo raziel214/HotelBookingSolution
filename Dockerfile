@@ -2,15 +2,14 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809 AS base
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5023
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0-nanoserver-1809 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copia los archivos .csproj de los diferentes proyectos
-COPY ["WebApi/WebApi.csproj", "WebApi/"]
+COPY ["WebApi.csproj", "WebApi/"]
 COPY ["Aplication/Aplication.csproj", "Aplication/"]
 COPY ["Domain/Domain.csproj", "Domain/"]
 COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]

@@ -138,17 +138,11 @@ para realizar la prueba de docker en local se debe compilar desde visual studio 
 se crean las imagenes necesarias para el funcionamiento de la aplicación
 ## GithubActions
 
-- name: Define el nombre del flujo de trabajo. En este caso, es "Build and Deploy .NET Core App with Docker Compose (Windows)".
-- on: Especifica cuándo debe ejecutarse el flujo de trabajo. Este flujo de trabajo se activa cuando hay un push a la rama main.
-- jobs: Define los trabajos que se ejecutarán. Aquí hay un trabajo principal build que se ejecuta en un entorno windows-latest.
-- steps: Dentro del trabajo build, se definen varios pasos:
-- Checkout: Usa la acción actions/checkout@v2 para obtener el código fuente del repositorio.
-Set up Docker Buildx: Configura Docker Buildx con el driver de Windows para soportar la construcción de imágenes de Windows.
-- Log in to DockerHub: Inicia sesión en DockerHub utilizando las credenciales almacenadas en los secretos DOCKER_USERNAME y DOCKER_PASSWORD.
-Build and push Docker images: Construye las imágenes Docker definidas en el archivo docker-compose.yml y las empuja a DockerHub.
-- Deploy to server (optional): Despliega los contenedores utilizando docker-compose up -d. Este paso es opcional y puede adaptarse según las necesidades del entorno.
-Configuración de Secretos
-Para que este flujo de trabajo funcione correctamente, debes configurar los siguientes secretos en tu repositorio de GitHub:
+- name: Define el nombre del flujo de trabajo. En este caso, es "push flow .yml".
+- on: Especifica cuándo debe ejecutarse el flujo de trabajo. Este flujo de trabajo se activa cuando hay un pull request sobre la rama  develop.
+- jobs: Define los trabajos que se ejecutarán. Acon las instalaciones correspondientes.
+- steps: Dentro del trabajo build, se definen varios pasos para ejecutar los jobs.
+- se deben asignar las credenciales en los secretos de github del repositorio para conectarse a docker hub y descargar las imagenes.
 
 DOCKER_USERNAME: Tu nombre de usuario de DockerHub.
 DOCKER_PASSWORD: Tu contraseña de DockerHub.

@@ -1,32 +1,35 @@
-# Variables
-PROJECT_NAME := HotelBookingSolution  # Nombre de la solución de Visual Studio
-DOCKER_IMAGE := hotelbookingapi
-DOCKER_TAG := latest
-DOCKERFILE_PATH := ./Dockerfile
-DOCKER_COMPOSE_FILE := ./docker-compose.yml
+SOLUTION       := HotelBookingSolution.sln
+API_PROJECT    := src/HotelBooking.Api/HotelBooking.Api.csproj
+INFRA_PROJECT  := src/HotelBooking.Infrastructure/HotelBooking.Infrastructure.csproj
 
-# Compila el proyecto WebApi
+.PHONY: restore build test run clean docker-up docker-down docker-build migrations-add migrations-apply
+
+restore:
+	dotnet restore $(SOLUTION)
+
 build:
-	dotnet build WebApi.csproj 
+	dotnet build $(SOLUTION) --configuration Release
 
-# Publica el proyecto (ajustado para UseAppHost=false)
-# Construye la imagen Docker utilizando Docker Compose para solo el servicio webapi
-docker-build:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) build webapi
+test:
+	dotnet test $(SOLUTION) --configuration Release
 
-# Ejecuta Docker Compose para levantar solo el servicio webapi
-docker-up:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) up -d webapi
+run:
+	dotnet run --project $(API_PROJECT)
 
-# Detiene y elimina el contenedor del servicio webapi
-docker-down:
-	docker-compose -f $(DOCKER_COMPOSE_FILE) down
-
-# Limpia la carpeta de publicación
 clean:
-	rm -rf ./publish
+	dotnet clean $(SOLUTION)
 
-# Hace todo el ciclo completo enfocándose en el servicio webapi
-all: build publish docker-build docker-up
+docker-build:
+	docker compose build
 
-.PHONY: build publish docker-build docker-up docker-down clean all
+docker-up:
+	docker compose up -d --build
+
+docker-down:
+	docker compose down
+
+migrations-add:
+	dotnet ef migrations add $(NAME) --project $(INFRA_PROJECT) --startup-project $(API_PROJECT)
+
+migrations-apply:
+	dotnet ef database update --project $(INFRA_PROJECT) --startup-project $(API_PROJECT)

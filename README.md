@@ -1,152 +1,170 @@
 # HotelBookingSolution
 
-Este proyecto implementa una solución para la gestión de reservas de hoteles, utilizando una arquitectura orientada al dominio (DDD) con .NET Core.
+API .NET 8 para gestión de reservas de hotel con autenticación JWT, implementada con **Arquitectura Hexagonal + Vertical Slicing + CQRS**.
 
-## Índice
+## Stack
 
-1. [Descripción General](#descripción-general)
-2. [Arquitectura](#arquitectura)
-3. [Diagrama de Contexto](#diagrama-de-contexto)
-4. [Diagrama de Contenedores](#diagrama-de-contenedores)
-5. [Diagrama de Componentes](#diagrama-de-componentes)
-6. [Configuración](#configuración)
-7. [Git Flow](#git-flow)
-8. [Dependencias del proyecto](#dependencias-del-proyecto)
-9. [Docker](#docker)
-10. [GithubActions](#Actions)
-11. [Licencia](#licencia)
+- .NET 8 · ASP.NET Core (Minimal APIs)
+- EF Core 8 + SQL Server 2022
+- MediatR · FluentValidation · AutoMapper
+- JWT Bearer + BCrypt.Net (password hashing)
+- Serilog (Console + File) · Swagger / OpenAPI
+- xUnit + Moq + FluentAssertions
+- Docker + docker-compose
+- GitHub Actions (Linux)
 
-## Descripción General
+## Estructura
 
-El proyecto **HotelBookingSolution** tiene como objetivo proporcionar una plataforma para la administración de reservas de hoteles. Está diseñado siguiendo los principios de Domain-Driven Design (DDD) y utiliza .NET Core para la implementación de servicios.
+```
+HotelBookingSolution/
+├── src/
+│   ├── HotelBooking.Domain/          ← Entidades + DomainException (sin dependencias)
+│   ├── HotelBooking.Application/     ← CQRS por feature (MediatR + FluentValidation + AutoMapper)
+│   ├── HotelBooking.Infrastructure/  ← EF Core, JWT, BCrypt, repos, UnitOfWork
+│   └── HotelBooking.Api/             ← Minimal APIs + GlobalExceptionHandler
+├── tests/
+│   └── HotelBooking.Tests/           ← xUnit + Moq sobre Handlers
+├── img/                              ← Diagramas C4
+├── .github/workflows/ci.yml          ← Build + test + docker build
+├── Dockerfile                        ← Multi-stage Linux 8.0, no-root, healthcheck /health
+├── docker-compose.yml                ← API + SQL Server 2022
+├── Directory.Build.props             ← TargetFramework + nullable + LangVersion
+├── HotelBookingSolution.sln
+└── Makefile
+```
 
-## Arquitectura
+### Features (Application)
 
-La solución sigue una arquitectura orientada al dominio con las siguientes capas:
-- **Domain**: Contiene la lógica de negocio y las entidades del dominio.
-- **Application**: Contiene la lógica de la aplicación y los casos de uso.
-- **Infrastructure**: Maneja la persistencia de datos y las interacciones con servicios externos.
-- **API**: Expone los endpoints para interactuar con la aplicación.
+- `Authentication/` — `Login` (emite JWT)
+- `Users/` — `Register`, `GetById`
+- `Roles/` — `Create`, `Update`, `Delete`, `GetById`, `GetAll`
+- `Hoteles/` — CRUD + `GetByCodigo`, `GetByEstado`
+- `Habitaciones/` — CRUD + `GetByHotel`, `GetByTipo`, `GetByEstado`
+- `TiposHabitaciones/` — CRUD
+- `Reservas/` — `Create`, `Update`, `Cancelar`, `GetById`, `GetAll`
+- `HotelesPreferidos/` — `Add`, `Remove`, `GetAll`, `GetByUser`
 
-## Diagrama de Contexto
+Cada feature contiene `Commands/<UseCase>/` y `Queries/<UseCase>/` con `Command/Query` (record) + `Validator` (FluentValidation) + `Handler` (sealed + primary constructor).
 
-Este diagrama muestra la interacción de los usuarios con el sistema y los sistemas externos:
+## Requisitos
 
-![Diagrama de Contexto](img/SamarttalentApi-Contexto.png)
-
-## Diagrama de Contenedores
-
-Este diagrama muestra los diferentes contenedores (microservicios, bases de datos, etc.) que componen la aplicación:
-
-![Diagrama de Contenedores](img/SamarttalentApi-Contedores.png)
-
-## Diagrama de Componentes
-
-Este diagrama detalla los componentes dentro de cada contenedor:
-
-![Diagrama de Componentes](img/SamarttalentApi-Componentes.png)
-
-## Diagrama de Base de Datos
-
-Este diagrama detalla el modelo de la base de datos:
-
-![Diagrama de Componentes](img/HotelBookingSolution.jpeg)
+- [.NET SDK 8.0](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) (opcional, para `docker compose`)
+- [EF Core CLI](https://learn.microsoft.com/ef/core/cli/dotnet): `dotnet tool install --global dotnet-ef`
 
 ## Configuración
 
-## Git Flow
-Este proyecto utiliza git flow para la gestion del branching como se explica en el ejemplo.
+Las credenciales **no** se versionan. Copia el ejemplo:
 
-Deben existir dos ramas principales para que el flujo de trabajo funcione correctamente:
+```bash
+cp .env.example .env
+```
 
- 
+Edita `.env` y define:
 
-master
-develop
-GitFlow creará por defecto los siguiente prefijos para las ramas auxiliares, los cuales ayudan a identificar y tener control en el repositorio:
+| Variable | Descripción |
+|---|---|
+| `SA_PASSWORD` | Password del usuario `sa` de SQL Server en el contenedor |
+| `JWT_KEY` | Clave de firma JWT (mínimo 32 caracteres en base64) |
+| `ConnectionStrings__DefaultConnection` | Override del connection string (opcional para Docker) |
 
-- feature/
-- release/
-- hotfix/
-- bugfix/
-- support/
-Se recomienda agregar un prefijo a las etiquetas, por ejemplo, la letra «v» sin comillas.
+Para ejecución local sin Docker, exporta también en tu shell:
 
-### Requisitos
+```bash
+export ConnectionStrings__DefaultConnection="Server=localhost,1433;Database=HotelReservationsDB;User Id=sa;Password=$SA_PASSWORD;TrustServerCertificate=true;Encrypt=False"
+export Jwt__Key="$JWT_KEY"
+```
 
-- .NET Core 8
-- Docker
-- Git
-- SQL Server
-## Dependencias del proyecto
-1. lista de dependencias
-   ```bash
-   AutoMapper.Extensions.Microsoft.DependencyInjection
-   BCrypt.Net-Next
-   coverlet.collector
-   Microsoft.AspNetCore.Authentication.JwtBearer
-   Microsoft.AspNetCore.Mvc.NewtonsoftJson
-   Microsoft.EntityFrameworkCore.Design
-   Microsoft.EntityFrameworkCore.SqlServer
-   Microsoft.Extensions.Configuration.Json
-   Microsoft.Extensions.Configuration.UserSecrets
-   Microsoft.NET.Test.Sdk
-   Microsoft.Playwright.MSTest
-   Microsoft.VisualStudio.Azure.Containers.Tools.Targets
-   Moq
-   MSTest.TestAdapter
-   MSTest.TestFramework
-   Swashbuckle.AspNetCore
-   xunit
+## Comandos comunes
 
-### Instrucciones de Configuración
+```bash
+# Restaurar + compilar + tests
+make restore
+make build
+make test
 
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/HotelBookingSolution.git
-2. Debe tener instalado Docker en el equipo si no lo puedes descargar de la siguiente url:
-   ```bash
-   https://www.docker.com/
-3. Debe  tener instalado Sqlserver en el equipo si no lo puedes descargar de la siguiente url:
-   ```bash
-   https://www.microsoft.com/es-co/sql-server/sql-server-downloads
+# Ejecutar API local (http://localhost:5023, Swagger en /swagger)
+make run
 
-4. Debe  tener instalado el ide visual studio o visual Studio code en el equipo si no lo puedes descargar de la siguiente url:
-   ```bash
-   https://visualstudio.microsoft.com/es/downloads/
+# Levantar API + SQL Server con Docker (http://localhost:8080)
+make docker-up
+curl http://localhost:8080/health
+make docker-down
+```
 
-5. Abrir el proyecto en visual studio y compilarlo, crear la base de datos HotelReservationsDB  y configurar  la base de datos  parametrizar el usuario en el archivo app.settings y ejecutar el siguiente comando :
-   ```bash
-   update-database en la consola de paquetes nugets
-6. Para agregar una nueva migración se debe abrir la terminal ingresar en la ruta del paquete infraestructure y ejecutar el siguiente comando:
-   ```bash
-   dotnet ef migrations add Nombre de la migración --startup-project ../WebApi.csproj
-7. esto crea datos por default para probar la aplicación el pass del usuario es:
-   ```bash
-   Email soulreavers214@gmail.com Password "Taylor/1214."
-   Endponit de generacion de tokens 
-   http://localhost:62329/login
-## Docker
-8. en la configuracion de docker se utilizó la configuración sugerida por visual studio  con la siguiente imagen
-   ```bash
-   mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809;
-para realizar la prueba de docker en local se debe compilar desde visual studio el docker este descarga las dependencias y agrega la imagen al repositorio local de contenedores  luego desde 
-desde la raiz del proyecto ejecutas los siguientes comandos.
--  choco install make
+## Migraciones EF Core
 
-- make all
-10.   debe salir algo similar a esto
-![Ejecucción Make all](img/makeall.png)
-![Ejecucción Make all](img/makeall2.png)
-se crean las imagenes necesarias para el funcionamiento de la aplicación
-## GithubActions
+Tras la primera clonación o cuando cambies entidades:
 
-- name: Define el nombre del flujo de trabajo. En este caso, es "push flow .yml".
-- on: Especifica cuándo debe ejecutarse el flujo de trabajo. Este flujo de trabajo se activa cuando hay un pull request sobre la rama  develop.
-- jobs: Define los trabajos que se ejecutarán. Acon las instalaciones correspondientes.
-- steps: Dentro del trabajo build, se definen varios pasos para ejecutar los jobs.
-- se deben asignar las credenciales en los secretos de github del repositorio para conectarse a docker hub y descargar las imagenes.
+```bash
+# Crear migración (sustituye NAME)
+make migrations-add NAME=InitialCreate
 
-DOCKER_USERNAME: Tu nombre de usuario de DockerHub.
-DOCKER_PASSWORD: Tu contraseña de DockerHub.
+# Aplicarla a la base de datos
+make migrations-apply
+```
 
+Equivalente sin Makefile:
+
+```bash
+dotnet ef migrations add InitialCreate \
+  --project src/HotelBooking.Infrastructure \
+  --startup-project src/HotelBooking.Api
+
+dotnet ef database update \
+  --project src/HotelBooking.Infrastructure \
+  --startup-project src/HotelBooking.Api
+```
+
+> **Nota**: La migración inicial no está versionada todavía — se generó después del refactor a Hexagonal+CQRS. Genérala localmente con el comando de arriba antes del primer arranque.
+
+## Endpoints principales
+
+| Método | Ruta | Auth | Descripción |
+|---|---|---|---|
+| GET | `/health` | público | Healthcheck para Docker / monitorización |
+| POST | `/api/Hotel/v1/auth/login` | público | Login → devuelve JWT |
+| POST | `/api/Hotel/v1/users/register` | público | Registro de usuario |
+| GET | `/api/Hotel/v1/users/{id}` | JWT | Detalle de usuario |
+| CRUD | `/api/Hotel/v1/roles` | JWT | Roles |
+| CRUD | `/api/Hotel/v1/hoteles` | JWT | Hoteles |
+| CRUD | `/api/Hotel/v1/habitaciones` | JWT | Habitaciones |
+| CRUD | `/api/Hotel/v1/tipos-habitaciones` | JWT | Tipos de habitación |
+| CRUD | `/api/Hotel/v1/reservas` | JWT | Reservas (`POST {id}/cancelar` para cancelar) |
+| CRUD | `/api/Hotel/v1/hoteles-preferidos` | JWT | Hoteles preferidos por usuario |
+
+Swagger expone toda la documentación en `http://localhost:<puerto>/swagger` (solo en `Development`).
+
+## Manejo de errores
+
+Las excepciones se mapean a `ProblemDetails` (RFC 7807) en [GlobalExceptionHandler.cs](src/HotelBooking.Api/Middleware/GlobalExceptionHandler.cs):
+
+| Excepción | HTTP |
+|---|---|
+| `FluentValidation.ValidationException` | 400 Bad Request |
+| `HotelBooking.Application.Common.Exceptions.NotFoundException` | 404 Not Found |
+| `HotelBooking.Domain.Common.DomainException` | 400 Bad Request |
+| `UnauthorizedAccessException` | 401 Unauthorized |
+| _otra_ | 500 Internal Server Error |
+
+## CI/CD
+
+`.github/workflows/ci.yml` ejecuta en cada PR/push a `main`/`develop`:
+
+1. `dotnet restore` + cache de NuGet
+2. `dotnet build` en Release
+3. `dotnet test`
+4. Build de la imagen Docker (sin push)
+
+## Diagramas
+
+Diagramas C4 del sistema en [img/](img/).
+
+## Convenciones
+
+- Idioma del repo: español. Términos técnicos en inglés OK.
+- Endpoints delegan en `ISender` (MediatR). Nada de lógica en el endpoint.
+- Toda I/O externa va por un puerto definido en `Application/Common/Ports/`.
+- Entidades del Domain con `private setters`, fábrica `Create(...)`, método `Update(...)`. Invariantes lanzan `DomainException`.
+- DTOs son `record`s.
+- Configuración por `IOptions<XxxSettings>` con `const string SectionName`. Nada de credenciales hardcoded.
